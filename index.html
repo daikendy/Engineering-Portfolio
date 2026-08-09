@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenneth Torcuator — Full-Stack Software Engineer</title>
+<meta name="description" content="Kenneth Torcuator builds full-stack platforms — AI career tools, multi-tenant SaaS, and the systems underneath them. Portfolio, notes, and a running changelog.">
+<meta property="og:title" content="Kenneth Torcuator — Full-Stack Software Engineer">
+<meta property="og:description" content="Portfolio, writing, and a running changelog from a full-stack engineer who ships end-to-end.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+<div id="dot"></div>
+
+<div class="topbar">
+  <div style="font-family:'Fraunces',serif; font-size:16px; font-weight:500;">Kenneth Torcuator</div>
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+</div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home">Home</a>
+  <a href="#work">Releases</a>
+  <a href="#notes">Notes</a>
+  <a href="#log">Changelog</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+  <a href="assets/resume.pdf" target="_blank">Resume ↗</a>
+  <div class="mm-foot"><span>© 2026 KT</span><span>v3.2.0</span></div>
+</div>
+
+<aside class="sidebar">
+  <div>
+    <div class="brand">
+      <div class="mark">KT</div>
+      <div class="brand-name">Kenneth Torcuator</div>
+      <div class="brand-role">Full-Stack Software Engineer</div>
+    </div>
+    <nav id="navlist">
+      <a class="navlink active" data-target="home"><span class="idx">00</span>Home</a>
+      <a class="navlink" data-target="work"><span class="idx">01</span>Releases</a>
+      <a class="navlink" data-target="notes"><span class="idx">02</span>Notes</a>
+      <a class="navlink" data-target="log"><span class="idx">03</span>Changelog</a>
+      <a class="navlink" data-target="about"><span class="idx">04</span>About</a>
+      <a class="navlink" data-target="contact"><span class="idx">05</span>Contact</a>
+      <a class="navlink resume" href="assets/resume.pdf" target="_blank"><span class="idx">↗</span>Resume</a>
+    </nav>
+  </div>
+  <div class="sidebar-foot">
+    <div class="status"><span class="pulse"></span>currently building</div>
+    <div class="social-row">
+      <a href="https://github.com/" target="_blank" rel="noopener">GH</a>
+      <a href="https://x.com/" target="_blank" rel="noopener">X</a>
+      <a href="https://linkedin.com/" target="_blank" rel="noopener">IN</a>
+    </div>
+  </div>
+</aside>
+
+<main>
+
+  <section id="home">
+    <div class="inner">
+      <h1 class="hero-head" id="heroHead"></h1>
+      <p class="hero-sub reveal">I write software the way a good editor writes copy — cut until only what matters is left. Currently building full-stack platforms that combine AI, secure architecture, and product thinking.</p>
+      <div class="hero-meta reveal">
+        <div><strong>2 platforms</strong>shipped end-to-end, solo</div>
+        <div><strong>v3.2.0</strong>current release cycle</div>
+        <div><strong>Remote</strong>based &amp; working from</div>
+      </div>
+    </div>
+    <div class="stack-ticker">
+      <div class="stack-track">
+        <span>TYPESCRIPT</span><span>PYTHON</span><span>JAVA</span><span>NEXT.JS</span><span>FASTAPI</span><span>SPRING BOOT</span><span>POSTGRES</span><span>OPENAI</span>
+        <span>TYPESCRIPT</span><span>PYTHON</span><span>JAVA</span><span>NEXT.JS</span><span>FASTAPI</span><span>SPRING BOOT</span><span>POSTGRES</span><span>OPENAI</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="inner" style="max-width:640px;">
+      <div class="eyebrow reveal">Releases</div>
+      <h2 class="sec-title reveal">Things I've shipped, tagged and versioned like the software they are.</h2>
+    </div>
+
+    <div class="release reveal">
+      <div class="ver">v3.2.0</div>
+      <div>
+        <h3><a href="releases/resumaxxing.html">ResuMaxxing — an AI career operating system</a></h3>
+        <p>An end-to-end platform for resume tailoring, application tracking, and AI-driven document review. Decoupled Next.js frontend and async FastAPI backend, with GPT-4o handling tailoring and skill-gap analysis under strict anti-hallucination guardrails.</p>
+        <div class="tags"><span class="tag">next.js</span><span class="tag">fastapi</span><span class="tag">openai</span><span class="tag">postgres</span></div>
+        <div class="release-link-row">
+          <a href="releases/resumaxxing.html" class="read-link">Read the writeup →</a>
+          <a href="https://resumaxxing.tech" target="_blank" rel="noopener" class="live-link">resumaxxing.tech ↗</a>
+        </div>
+        <div class="release-visual"></div>
+      </div>
+    </div>
+
+    <div class="release reveal">
+      <div class="ver">v2.8.0</div>
+      <div>
+        <h3><a href="releases/eruscent.html">Eruscent — institutional peer tutoring platform</a></h3>
+        <p>A multi-tenant B2B SaaS connecting universities, departments, students, and tutors, with tenant isolation enforced down to the department level, behind an OWASP-hardened Spring Boot backend.</p>
+        <div class="tags"><span class="tag">spring boot</span><span class="tag">java</span><span class="tag">next.js</span><span class="tag">postgres</span></div>
+        <div class="release-link-row">
+          <a href="releases/eruscent.html" class="read-link">Read the writeup →</a>
+          <a href="https://www.eruscent.com" target="_blank" rel="noopener" class="live-link">eruscent.com ↗</a>
+        </div>
+        <div class="release-visual"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="notes">
+    <div class="inner" style="max-width:640px;">
+      <div class="eyebrow reveal">Notes</div>
+      <h2 class="sec-title reveal">Writing on systems, decisions, and the occasional dead end.</h2>
+    </div>
+
+    <div style="max-width:680px;">
+      <div class="note reveal">
+        <a href="notes/orm-tradeoffs.html" class="note-link">
+          <div class="note-left"><h3>Why we moved off our ORM, eventually</h3><div class="excerpt">The tradeoffs looked fine for two years — then they didn't.</div></div>
+          <div class="note-meta">Jul 2026<br>7 min</div>
+          <div class="note-arrow">→</div>
+        </a>
+      </div>
+      <div class="note reveal">
+        <a href="notes/concurrency-model.html" class="note-link">
+          <div class="note-left"><h3>A smaller mental model for concurrency</h3><div class="excerpt">Most bugs I've shipped came from a model that was almost right.</div></div>
+          <div class="note-meta">May 2026<br>5 min</div>
+          <div class="note-arrow">→</div>
+        </a>
+      </div>
+      <div class="note reveal">
+        <a href="notes/invisible-deploy-tools.html" class="note-link">
+          <div class="note-left"><h3>On writing deploy tools nobody notices</h3><div class="excerpt">The best infrastructure is the kind people forget exists.</div></div>
+          <div class="note-meta">Feb 2026<br>6 min</div>
+          <div class="note-arrow">→</div>
+        </a>
+      </div>
+      <div class="note reveal">
+        <a href="notes/on-call-lessons.html" class="note-link">
+          <div class="note-left"><h3>What six months of on-call taught me</h3><div class="excerpt">Reliability is a writing problem as much as an engineering one.</div></div>
+          <div class="note-meta">Nov 2025<br>9 min</div>
+          <div class="note-arrow">→</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="log">
+    <div class="inner" style="max-width:640px;">
+      <div class="eyebrow reveal">Changelog</div>
+      <h2 class="sec-title reveal">A running log of what I'm learning, treated with the same rigor as a release note.</h2>
+    </div>
+
+    <div style="max-width:700px;">
+      <div class="log-entry reveal">
+        <div class="log-date">Jul 14</div>
+        <div class="log-row">
+          <span class="log-badge badge-added">Added</span>
+          <div class="log-body"><p>[Placeholder] Started learning a new tool or skill — replace with what you're actually exploring right now.</p></div>
+        </div>
+      </div>
+      <div class="log-entry reveal">
+        <div class="log-date">Jun 30</div>
+        <div class="log-row">
+          <span class="log-badge badge-improved">Improved</span>
+          <div class="log-body"><p>[Placeholder] Something you've gotten measurably better at recently.</p></div>
+        </div>
+      </div>
+      <div class="log-entry reveal">
+        <div class="log-date">Jun 12</div>
+        <div class="log-row">
+          <span class="log-badge badge-fixed">Fixed</span>
+          <div class="log-body"><p>[Placeholder] A mistake or bad habit you caught yourself in, and what you changed.</p></div>
+        </div>
+      </div>
+      <div class="log-entry reveal">
+        <div class="log-date">May 22</div>
+        <div class="log-row">
+          <span class="log-badge badge-added">Added</span>
+          <div class="log-body"><p>[Placeholder] A new experience, talk, or project milestone worth logging.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="inner" style="max-width:none;">
+      <div class="eyebrow reveal">About</div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>[Placeholder] I'm Kenneth — an engineer who cares more about the shape of a problem than the framework used to solve it.</p>
+          <p>[Placeholder — replace with your real background] Over the last few years I've built full-stack platforms end-to-end, from database schema to production auth to billing. I like small teams, clear ownership, and writing code a stranger could read at 2am during an incident.</p>
+          <p>[Placeholder] Outside of work — swap this in with what's actually true for you.</p>
+        </div>
+        <div class="now-box reveal">
+          <h4>Now</h4>
+          <div class="now-item"><span>Role</span><span>[Placeholder]</span></div>
+          <div class="now-item"><span>Focus</span><span>[Placeholder]</span></div>
+          <div class="now-item"><span>Reading</span><span>[Placeholder]</span></div>
+          <div class="now-item"><span>Learning</span><span>[Placeholder]</span></div>
+          <div class="now-item"><span>Based in</span><span>[Placeholder]</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="inner">
+      <div class="eyebrow reveal">Contact</div>
+      <h2 class="contact-big reveal">Building something worth building?<br>Let's talk — <a href="mailto:hello@kennethtorcuator.dev">hello@kennethtorcuator.dev</a></h2>
+      <div class="contact-links reveal">
+        <a href="mailto:hello@kennethtorcuator.dev">Email →</a>
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub →</a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn →</a>
+        <a href="assets/resume.pdf" target="_blank">Resume →</a>
+      </div>
+      <footer>
+        <span>© 2026 Kenneth Torcuator</span>
+        <span class="mono">build v3.2.0 — last deployed today</span>
+      </footer>
+    </div>
+  </section>
+
+</main>
+
+<script>
+const heroText = "I build software that <em>disappears</em> into use.";
+const heroHead = document.getElementById('heroHead');
+heroText.split(' ').forEach(w => {
+  const wordWrap = document.createElement('span');
+  wordWrap.className = 'word';
+  if(w.includes('<em>')){
+    wordWrap.innerHTML = '<span>' + w.replace('<em>','').replace('</em>','') + '</span>';
+    wordWrap.querySelector('span').style.fontStyle = 'italic';
+    wordWrap.querySelector('span').style.fontWeight = '500';
+    wordWrap.querySelector('span').style.color = 'var(--cobalt-deep)';
+  } else {
+    wordWrap.innerHTML = '<span>' + w + '</span>';
+  }
+  heroHead.appendChild(wordWrap);
+  heroHead.appendChild(document.createTextNode(' '));
+});
+
+gsap.timeline({ delay: 0.2 })
+  .to('.word span', { y: '0%', duration: 0.9, stagger: 0.045, ease: 'power4.out' })
+  .to('.hero-sub, .hero-meta', { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power2.out' }, '-=0.5');
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>
