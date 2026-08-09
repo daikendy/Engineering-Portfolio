@@ -50,15 +50,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener('click', () => {
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       menuBtn.classList.toggle('open');
       mobileMenu.classList.toggle('open');
     });
+    // Close on link click
     mobileMenu.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         menuBtn.classList.remove('open');
         mobileMenu.classList.remove('open');
       });
+    });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+        menuBtn.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      }
+    });
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        menuBtn.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      }
     });
   }
 });
