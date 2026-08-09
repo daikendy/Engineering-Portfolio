@@ -296,6 +296,134 @@ footer{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono'
 .subpage-nav a{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); }
 .subpage-nav a:hover{ color:var(--cobalt); }
 
+/* STACK SECTION */
+.stack-categories{ display:flex; flex-direction:column; gap:0; max-width:720px; }
+.stack-category{ padding:28px 0; border-top:1px solid var(--hairline); }
+.stack-category:last-child{ border-bottom:none; }
+.stack-category-label{
+  font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--cobalt);
+  text-transform:uppercase; letter-spacing:.08em; margin-bottom:16px;
+}
+.stack-rows{ display:flex; flex-direction:column; gap:0; }
+.stack-row{
+  display:grid; grid-template-columns:160px 1fr; gap:24px;
+  padding:10px 0; align-items:baseline;
+}
+.stack-row + .stack-row{ border-top:1px solid var(--hairline); }
+.stack-name{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink); font-weight:500;
+  display:flex; align-items:center; gap:8px;
+}
+.stack-name::before{ content:''; width:5px; height:5px; border-radius:50%; background:var(--cobalt); flex-shrink:0; }
+.stack-why{ font-size:13.5px; color:var(--ink-soft); line-height:1.6; }
+
+/* ARCHITECTURE SECTION */
+.arch-intro{ font-size:15.5px; color:var(--ink-soft); line-height:1.75; max-width:560px; margin-bottom:52px; }
+.arch-panels{ display:flex; flex-direction:column; gap:24px; max-width:760px; }
+.arch-panel{
+  border:1px solid var(--hairline); border-radius:12px; overflow:hidden;
+  background:var(--paper);
+}
+.arch-panel-head{
+  padding:16px 22px; border-bottom:1px solid var(--hairline);
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--paper-dim);
+}
+.arch-panel-title{
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink); font-weight:500;
+  display:flex; align-items:center; gap:10px;
+}
+.arch-panel-title .arch-dot{
+  width:8px; height:8px; border-radius:50%; background:var(--cobalt); opacity:.7;
+}
+.arch-panel-badge{
+  font-family:'IBM Plex Mono',monospace; font-size:10px; padding:3px 8px;
+  border:1px solid var(--hairline); border-radius:4px; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.04em;
+}
+.arch-panel-body{ padding:24px 22px; }
+.arch-tier-list{ display:flex; flex-direction:column; gap:0; }
+.arch-tier{
+  display:grid; grid-template-columns:180px 1fr; gap:20px;
+  padding:12px 0; border-top:1px solid var(--hairline); align-items:start;
+}
+.arch-tier:first-child{ border-top:none; }
+.arch-tier-name{
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--cobalt); font-weight:500;
+}
+.arch-tier-desc{ font-size:13.5px; color:var(--ink-soft); line-height:1.65; }
+.arch-features-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+}
+.arch-feature{
+  border:1px solid var(--hairline); border-radius:8px; padding:14px 16px;
+  display:flex; flex-direction:column; gap:4px;
+}
+.arch-feature-name{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink); font-weight:500;
+}
+.arch-feature-desc{ font-size:12.5px; color:var(--muted); line-height:1.55; }
+
+/* PRINCIPLES SECTION */
+.principles-list{ display:flex; flex-direction:column; gap:0; max-width:720px; }
+.principle-item{
+  display:grid; grid-template-columns:64px 1fr; gap:24px;
+  padding:36px 0; border-top:1px solid var(--hairline); align-items:start;
+}
+.principle-item:last-child{ border-bottom:none; }
+.principle-num{
+  font-family:'Fraunces',serif; font-size:clamp(36px,4vw,52px);
+  color:var(--cobalt-wash); font-weight:400; line-height:1; letter-spacing:-.02em;
+  user-select:none;
+}
+.principle-body{ padding-top:6px; }
+.principle-stmt{
+  font-family:'Fraunces',serif; font-weight:400; font-size:clamp(20px,2.2vw,27px);
+  color:var(--ink); line-height:1.25; margin-bottom:10px; letter-spacing:-.005em;
+}
+.principle-expand{ font-size:14px; color:var(--ink-soft); line-height:1.7; max-width:520px; }
+
+/* SUBPAGE table styles */
+.subpage-body table{
+  width:100%; border-collapse:collapse; margin:0 0 32px; font-size:13px;
+}
+.subpage-body th{
+  font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.05em; color:var(--muted); font-weight:500;
+  padding:10px 14px; text-align:left; border-bottom:1px solid var(--hairline);
+  background:var(--paper-dim);
+}
+.subpage-body td{
+  padding:12px 14px; border-bottom:1px solid var(--hairline); color:var(--ink-soft);
+  line-height:1.55; vertical-align:top;
+}
+.subpage-body td strong{ color:var(--ink); font-weight:500; }
+.subpage-body td code{
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; background:var(--paper-dim);
+  padding:2px 6px; border-radius:4px; color:var(--cobalt);
+}
+.subpage-body tr:last-child td{ border-bottom:none; }
+.subpage-body .table-wrap{
+  border:1px solid var(--hairline); border-radius:10px; overflow:hidden; margin:0 0 32px;
+}
+.subpage-body .table-wrap table{ margin:0; }
+.subpage-body .info-block{
+  border:1px solid var(--hairline); border-radius:10px; padding:20px 22px;
+  margin:0 0 28px; background:var(--paper-dim);
+  font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); line-height:1.7;
+}
+.subpage-body .pillar-list{
+  display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:0 0 32px;
+}
+.subpage-body .pillar{
+  border:1px solid var(--hairline); border-radius:8px; padding:14px 16px;
+}
+.subpage-body .pillar-title{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--cobalt);
+  font-weight:500; margin-bottom:4px;
+}
+.subpage-body .pillar-desc{ font-size:13px; color:var(--ink-soft); line-height:1.55; }
+
 @media (max-width: 900px){
   .sidebar{ display:none; }
   .topbar{
@@ -312,4 +440,11 @@ footer{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono'
   .hero-visual{ margin:0 24px 40px; height:180px; }
   .placeholder-note{ margin:0 24px 32px; }
   .subpage-nav{ padding:24px 24px 64px; flex-direction:column; gap:12px; }
+  .stack-row{ grid-template-columns:1fr; gap:4px; }
+  .arch-tier{ grid-template-columns:1fr; gap:6px; }
+  .arch-features-grid{ grid-template-columns:1fr; }
+  .principle-item{ grid-template-columns:44px 1fr; gap:16px; }
+  .subpage-body .pillar-list{ grid-template-columns:1fr; }
+  .subpage-body table{ font-size:12px; }
+  .subpage-body th, .subpage-body td{ padding:10px 12px; }
 }

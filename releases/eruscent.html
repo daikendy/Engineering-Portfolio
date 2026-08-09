@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Eruscent — Kenneth Torcuator</title>
-<meta name="description" content="A multi-tenant institutional peer tutoring and academic telemetry platform.">
+<meta name="description" content="Architecture and engineering writeup for Eruscent — a production-grade multi-tenant B2B SaaS platform for institutional peer tutoring.">
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -25,6 +25,9 @@
   <a href="../index.html#work">Releases</a>
   <a href="../index.html#notes">Notes</a>
   <a href="../index.html#log">Changelog</a>
+  <a href="../index.html#stack">Stack</a>
+  <a href="../index.html#arch">Architecture</a>
+  <a href="../index.html#principles">Principles</a>
   <a href="../index.html#about">About</a>
   <a href="../index.html#contact">Contact</a>
   <a href="../assets/resume.pdf" target="_blank">Resume ↗</a>
@@ -42,8 +45,11 @@
       <a class="navlink active" href="../index.html#work"><span class="idx">01</span>Releases</a>
       <a class="navlink" href="../index.html#notes"><span class="idx">02</span>Notes</a>
       <a class="navlink" href="../index.html#log"><span class="idx">03</span>Changelog</a>
-      <a class="navlink" href="../index.html#about"><span class="idx">04</span>About</a>
-      <a class="navlink" href="../index.html#contact"><span class="idx">05</span>Contact</a>
+      <a class="navlink" href="../index.html#stack"><span class="idx">04</span>Stack</a>
+      <a class="navlink" href="../index.html#arch"><span class="idx">05</span>Architecture</a>
+      <a class="navlink" href="../index.html#principles"><span class="idx">06</span>Principles</a>
+      <a class="navlink" href="../index.html#about"><span class="idx">07</span>About</a>
+      <a class="navlink" href="../index.html#contact"><span class="idx">08</span>Contact</a>
       <a class="navlink resume" href="../assets/resume.pdf" target="_blank"><span class="idx">↗</span>Resume</a>
     </nav>
   </div>
@@ -63,7 +69,7 @@
     <div class="eyebrow">v2.8.0 — Release</div>
     <h1 class="subpage-title">Eruscent — institutional peer tutoring platform</h1>
     <div class="subpage-meta">
-      <span>spring boot · java · next.js · postgres</span>
+      <span>spring boot · java 21 · next.js · postgres · clerk · flyway</span>
       <span><a href="https://www.eruscent.com" target="_blank" rel="noopener" style="color:var(--cobalt);">eruscent.com ↗</a></span>
     </div>
   </div>
@@ -71,26 +77,225 @@
   <div class="hero-visual"></div>
 
   <div class="subpage-body">
-    <p>Eruscent is a production-grade, multi-tenant B2B SaaS platform connecting university students with peer tutors. It's built around a strict institutional hierarchy — university, campus, department, user — with tenant boundaries enforced at both the database and service layer, not just the UI.</p>
 
-    <h2>Architecture</h2>
-    <p>The backend is a Spring Boot 3 service on Java 21, with PostgreSQL for storage and Flyway managing schema evolution. The frontend is Next.js with TypeScript and Tailwind. Identity is offloaded to Clerk as a stateless JWT/JWKS provider, with just-in-time user provisioning so accounts self-heal rather than requiring manual sync.</p>
+    <p>Eruscent is a production-grade, multi-tenant B2B SaaS platform connecting university students with peer tutors. It's an institutional-scale system: universities are tenants, campuses are subdivisions, departments are the unit of academic scope, and every user belongs to that hierarchy. The entire system enforces this boundary at every layer — not by convention, but by design. Engineered and shipped end-to-end, solo.</p>
 
-    <h2>What it does</h2>
+    <h2>Core Architecture: Multi-Tenant Hierarchy</h2>
+    <p>The tenant model is four levels deep: <strong>University → Campus → Department → User</strong>. This isn't just a data model — it's an enforcement contract. Every service method, every repository query, every CORS-allowed origin is scoped to this hierarchy. A student in Department A cannot see, access, or interact with data in Department B, even within the same university.</p>
+
+    <div class="pillar-list">
+      <div class="pillar">
+        <div class="pillar-title">University (Tenant Root)</div>
+        <div class="pillar-desc">Top-level isolation boundary. Each university has its own allowed email domains, enforced by the 3-tier domain gating engine. Platform-level super admins manage universities; everything beneath them is scoped to their institution.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Campus (Domain-Locked)</div>
+        <div class="pillar-desc">Campuses subdivide universities geographically or operationally. Domain-locked CORS rules and subdomain routing are configured at the campus level, allowing a single platform deployment to serve multiple campuses simultaneously.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Department (Academic Scope)</div>
+        <div class="pillar-desc">The primary unit of academic telemetry. Department heads have analytics access to session volumes, bottleneck subject areas, tutor coverage gaps, and attendance drop-off rates — scoped strictly to their department's data.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">User Principals</div>
+        <div class="pillar-desc">Students and tutors live at the department level. A user can hold multiple roles simultaneously — a verified tutor who is also enrolled as a student. Spring Security maps all active roles into the security context as a multi-authority principal.</div>
+      </div>
+    </div>
+
+    <h2>Identity: JWKS, JIT Provisioning & Self-Healing</h2>
+    <p>Authentication is fully decoupled from the application. Clerk acts as the identity provider, issuing JWTs signed with RSA keys published at a public JWKS endpoint. The backend verifies tokens locally — the JWKS URI is used once at startup to fetch public keys, then cached. No round-trips to Clerk on every request.</p>
     <ul>
-      <li><strong>Domain-gated signup:</strong> registration is restricted in real time to a super-admin-managed allowlist of verified university email domains.</li>
-      <li><strong>Dual session engine:</strong> supports both 1:1 tutoring bookings and multi-student group lobbies, with real-time schedule-conflict prevention and optimistic-locking concurrency guards to stop double-booking under concurrent seat claims.</li>
-      <li><strong>Zero-trust messaging:</strong> in-session peer chat is scoped to active participants only, with access revoked dynamically as enrollment changes.</li>
-      <li><strong>Verified reviews and gamification:</strong> review submission is gated to completed sessions with anti-self-review checks, and a timezone-aware streak system tracks active engagement for students and tutors.</li>
-      <li><strong>Security posture:</strong> OWASP-hardened, with a multi-subdomain CORS matrix, per-IP rate limiting via Bucket4j, and a tamper-evident audit log with digital signatures on sensitive actions.</li>
+      <li><strong>Just-In-Time provisioning:</strong> When a user authenticates via Clerk but has no record in the local Postgres database, <code>userService.createEmptyUserFromClerk()</code> auto-provisions their account in the same request. No separate registration step required.</li>
+      <li><strong>Identity self-healing:</strong> On every authenticated request, if the JWT claims contain a different name or profile picture URL than what's stored in the database, the backend automatically updates the local record. The local state never drifts from the identity provider.</li>
+      <li><strong>Dual role aggregation:</strong> A principal who is both a student and an approved tutor gets both <code>ROLE_STUDENT</code> and <code>ROLE_TUTOR</code> mapped into their Spring Security context simultaneously. Method-level security annotations handle the rest.</li>
     </ul>
 
+    <h2>Institutional Domain Gating</h2>
+    <p>Registration is restricted in real time. You can't create an account on Eruscent unless your email domain is on the approved list for your institution. The <code>EmailDomainService</code> implements a 3-tier fallback strategy:</p>
+    <ul>
+      <li><strong>Tier 1 — Database:</strong> Check the <code>allowed_email_domains</code> table for active domain entries matching the registering institution. This is the primary control — super admins add or remove domains through the admin portal in real time.</li>
+      <li><strong>Tier 2 — Environment variable:</strong> If no active DB domains exist (bootstrap scenario), fall back to the <code>app.registration.allowed-domains</code> environment property for initial seeding.</li>
+      <li><strong>Tier 3 — Deny all:</strong> If neither tier resolves, registration is denied by default. The platform is closed until explicitly opened. There is no default-open state.</li>
+    </ul>
+
+    <h2>Dual Session Architecture & Conflict Engine</h2>
+    <p>Eruscent supports two distinct tutoring session modes, both with real-time conflict prevention and state lifecycle management.</p>
+    <ul>
+      <li><strong>1-on-1 Private Sessions:</strong> Calendar-based time slot booking with direct tutor acceptance or rejection. Pending requests auto-expire after 15 minutes. Single student per booking, enforced at the service layer.</li>
+      <li><strong>Group Session Lobbies:</strong> Multi-student group sessions with dynamic capacity bounds (enrolled vs. max), locked group pricing (50% rate multiplier), and an hourly low-attendance watchdog that fires JavaMailSender alerts when enrollment falls below threshold.</li>
+      <li><strong>Schedule Conflict Engine:</strong> Both session types validate against existing bookings at the time of request. Overlap detection runs before any write reaches the database.</li>
+    </ul>
+
+    <h2>Concurrency: Optimistic Locking Guard</h2>
+    <p>During high-demand registration windows — a popular tutor opens a group lobby, multiple students try to enroll simultaneously — the database faces concurrent mutation attempts on the same record. Eruscent handles this with JPA optimistic locking:</p>
+    <ul>
+      <li>Each enrollment-capable entity carries a <code>@Version</code> field managed by JPA.</li>
+      <li>When two concurrent transactions attempt to modify the same record, the first one succeeds and increments the version. The second one reads a stale version and throws <code>ObjectOptimisticLockingFailureException</code>.</li>
+      <li>The <code>GlobalExceptionHandler</code> catches this exception and maps it to <strong>HTTP 409 Conflict</strong> with a structured error body. The client shows the user a clear message and prompts a retry — rather than silently corrupting the enrollment count.</li>
+    </ul>
+
+    <h2>Zero-Trust Peer Chat</h2>
+    <p>The in-session messaging system doesn't trust the request alone. Every chat access attempt goes through <code>validateUserAccess</code> in <code>MessageService</code>:</p>
+    <ul>
+      <li><strong>1-on-1 sessions:</strong> Only the session's student and tutor can access the chat thread. Principal is verified against both participants on every message fetch.</li>
+      <li><strong>Group lobbies:</strong> Access requires the principal to be the tutor or an actively enrolled student — <em>not</em> a student who was previously enrolled and then cancelled. Enrollment status is checked at message-fetch time, not at login time.</li>
+      <li><strong>Instant revocation:</strong> When a student cancels their group lobby enrollment, they lose chat access on the next request. There is no grace period.</li>
+    </ul>
+
+    <h2>Security: OWASP Hardening & Rate Limiting</h2>
+    <p>The backend was subjected to a comprehensive security engineering audit covering the OWASP Top 10. Key controls implemented:</p>
+    <ul>
+      <li><strong>Tamper-evident audit pipeline:</strong> Every security event is logged asynchronously via the <code>auditExecutor</code> thread pool. Before persistence, logs are PII-scrubbed with regex redaction, sanitized against XSS and CRLF injection, and signed with HMAC-SHA256. A tampered log entry is detectable.</li>
+      <li><strong>Multi-subdomain CORS matrix:</strong> CORS allowed origins are configured per campus subdomain — not globally open, not wildcard. Cross-origin requests from unlisted origins are rejected at the filter chain level.</li>
+      <li><strong>Structured exception contract:</strong> The <code>GlobalExceptionHandler</code> (<code>@RestControllerAdvice</code>) enforces RFC 7807-style error responses across all endpoints. Internal stack traces never reach the client. Every error has a <code>status</code>, <code>error</code>, <code>message</code>, and ISO-8601 <code>timestamp</code>.</li>
+    </ul>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Profile</th>
+            <th>Protected Endpoints</th>
+            <th>Limit</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Auth</strong></td>
+            <td><code>/api/v1/auth/**</code>, login, register</td>
+            <td>5 req / min per IP</td>
+            <td>HTTP 429</td>
+          </tr>
+          <tr>
+            <td><strong>Public Contact</strong></td>
+            <td><code>/api/v1/public/contact</code></td>
+            <td>2 req / hr per IP</td>
+            <td>HTTP 429</td>
+          </tr>
+          <tr>
+            <td><strong>State Mutation</strong></td>
+            <td>All <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, <code>PATCH</code></td>
+            <td>60 req / min per IP</td>
+            <td>HTTP 429</td>
+          </tr>
+          <tr>
+            <td><strong>Read Bypass</strong></td>
+            <td>All <code>GET</code> and <code>OPTIONS</code> preflight</td>
+            <td>Unthrottled</td>
+            <td>Allowed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Analytics & Caching Architecture</h2>
+    <ul>
+      <li><strong>Spring @Cacheable layer:</strong> Global KPI aggregations and university heatmap node trees are cached in memory. When a super-admin dashboard reloads, it hits the cache — not the database. High-traffic admin reloads don't trigger cascading SQL aggregation queries across the entire multi-tenant dataset.</li>
+      <li><strong>Institutional analytics:</strong> Department heads see session volume trends, bottleneck subject areas, tutor coverage ratios, and student attendance rates — all scoped to their department. Aggregate queries are backed by the Spring @Cacheable layer to handle concurrent admin sessions.</li>
+      <li><strong>Dynamic JPA Criteria API search:</strong> The tutor marketplace uses <code>TutorProfileSpecifications.java</code> — a runtime predicate builder over campusId, searchTerm (OR across name/bio/subject/course code), maxPrice, and minRating. Queries use <code>query.distinct(true)</code> to prevent duplicates from JOIN paths.</li>
+      <li><strong>Timezone-aware gamification streaks:</strong> Daily activity streak calculation converts UTC session timestamps to the user's local timezone (e.g., <code>Asia/Manila</code>, <code>America/New_York</code>) before comparing dates. A streak break in Manila isn't a streak break in New York.</li>
+    </ul>
+
+    <h2>Background Engines & Automated Maintenance</h2>
+    <ul>
+      <li><strong>Thread pool isolation:</strong> Two dedicated pools — <code>auditExecutor</code> (2 core / 5 max / 100 queue depth) for HMAC audit log persistence, and <code>taskExecutor</code> (5 core / 10 max / 500 queue depth) for transactional email via JavaMailSender. Audit logging never competes with email for threads.</li>
+      <li><strong>Nightly DatabaseCleanupService:</strong> Scheduled cron purges expired time slots, auto-completes sessions that should have ended, and applies audit log retention policies.</li>
+      <li><strong>GroupSessionScheduler watchdog:</strong> Runs hourly. If a group session's enrollment drops below the minimum attendance threshold, it fires a low-attendance alert email to the tutor and department head.</li>
+      <li><strong>Resilient Axios client:</strong> The Next.js frontend uses a custom Axios interceptor with exponential backoff retries on transient errors (502, 503, 504, 429, timeouts) — max 2 retries with a 1-second base delay. Retries are transparent to the user; exhausted retries surface a structured error toast.</li>
+    </ul>
+
+    <h2>DevOps: CI/CD Pipeline</h2>
+    <ul>
+      <li><strong>GitHub Actions — Integration CI:</strong> On every push or PR to main, spins up a live PostgreSQL 16 service container, compiles Java 21, and runs the full integration test suite against a real database.</li>
+      <li><strong>GitHub Actions — Weekly Security Audit:</strong> Automated cron (0 0 * * 0) runs <code>npm audit --audit-level=high</code> on the frontend and <code>mvn clean verify</code> on the backend. Dependency vulnerabilities are caught before they reach production.</li>
+      <li><strong>Flyway schema migrations:</strong> Database structure evolves through versioned, reproducible migration scripts. No manual DDL in a shared environment.</li>
+      <li><strong>OpenAPI 3.0 / Swagger UI:</strong> The backend auto-generates interactive API documentation via <code>springdoc-openapi-starter-webmvc-ui</code> — the spec is always in sync with the code, not maintained separately.</li>
+    </ul>
+
+    <h2>Technology Stack</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Frontend framework</td>
+            <td>Next.js 16 App Router</td>
+            <td>Server & client components, multi-role dashboards</td>
+          </tr>
+          <tr>
+            <td>Styling</td>
+            <td>Tailwind CSS v4</td>
+            <td>Utility-first design system</td>
+          </tr>
+          <tr>
+            <td>Backend framework</td>
+            <td>Spring Boot 3.4</td>
+            <td>OWASP-hardened REST API, security filter chain</td>
+          </tr>
+          <tr>
+            <td>Language</td>
+            <td>Java 21</td>
+            <td>Virtual threads, records, pattern matching</td>
+          </tr>
+          <tr>
+            <td>ORM</td>
+            <td>Spring Data JPA + Hibernate</td>
+            <td>Criteria API specifications, optimistic locking</td>
+          </tr>
+          <tr>
+            <td>Database</td>
+            <td>PostgreSQL 16</td>
+            <td>Relational integrity, Flyway migrations</td>
+          </tr>
+          <tr>
+            <td>Schema migrations</td>
+            <td>Flyway</td>
+            <td>Versioned, reproducible schema evolution</td>
+          </tr>
+          <tr>
+            <td>Authentication</td>
+            <td>Clerk + JWKS</td>
+            <td>Stateless JWT verification with local key cache</td>
+          </tr>
+          <tr>
+            <td>Rate limiting</td>
+            <td>Bucket4j</td>
+            <td>Per-IP token bucket with configurable profiles</td>
+          </tr>
+          <tr>
+            <td>API documentation</td>
+            <td>OpenAPI 3.0 / Swagger UI</td>
+            <td>Auto-generated, always in sync with code</td>
+          </tr>
+          <tr>
+            <td>CI/CD</td>
+            <td>GitHub Actions</td>
+            <td>Live Postgres 16 container tests + weekly security audits</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>JavaMailSender / SMTP</td>
+            <td>Transactional email: session alerts, low-attendance notifications</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <h2>Notes</h2>
-    <p>[Placeholder — add your own reflection here: the hardest architectural decision, a tradeoff you'd revisit, or what shipping a true multi-tenant system taught you. Replace this paragraph with that.]</p>
+    <p>The multi-tenant hierarchy sounds simple on paper — university, campus, department, user — but enforcing it consistently across 28 REST API endpoints, 6 distinct role types, and a caching layer that aggregates across tenants without leaking data between them required treating the hierarchy as a first-class architectural primitive, not a filter condition bolted on at the end.</p>
+    <p>The hardest single decision was the optimistic locking guard. The tempting alternative is pessimistic locking — lock the row, wait, write. It's simpler to reason about. But under the enrollment load a popular tutor's lobby generates at the moment it goes live, pessimistic locking turns into a queue backed by a timeout, and users get errors that feel like bugs rather than honest "you got there second" responses. The 409 Conflict + structured error message is the honest design: it tells the client exactly what happened and why.</p>
+
   </div>
 
   <div class="subpage-nav">
-    <a href="resumaxxing.html">← Previous release: ResuMaxxing</a>
+    <a href="resumaxxing.html">← Previous: ResuMaxxing</a>
     <a href="../index.html#work">Back to all releases →</a>
   </div>
 </main>

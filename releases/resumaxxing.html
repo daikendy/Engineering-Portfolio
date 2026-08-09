@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ResuMaxxing — Kenneth Torcuator</title>
-<meta name="description" content="An AI-driven career operating system for resume tailoring, application tracking, and document review.">
+<meta name="description" content="Architecture and engineering writeup for ResuMaxxing — an AI-driven career operating system for resume tailoring, application tracking, and document review.">
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -25,6 +25,9 @@
   <a href="../index.html#work">Releases</a>
   <a href="../index.html#notes">Notes</a>
   <a href="../index.html#log">Changelog</a>
+  <a href="../index.html#stack">Stack</a>
+  <a href="../index.html#arch">Architecture</a>
+  <a href="../index.html#principles">Principles</a>
   <a href="../index.html#about">About</a>
   <a href="../index.html#contact">Contact</a>
   <a href="../assets/resume.pdf" target="_blank">Resume ↗</a>
@@ -42,8 +45,11 @@
       <a class="navlink active" href="../index.html#work"><span class="idx">01</span>Releases</a>
       <a class="navlink" href="../index.html#notes"><span class="idx">02</span>Notes</a>
       <a class="navlink" href="../index.html#log"><span class="idx">03</span>Changelog</a>
-      <a class="navlink" href="../index.html#about"><span class="idx">04</span>About</a>
-      <a class="navlink" href="../index.html#contact"><span class="idx">05</span>Contact</a>
+      <a class="navlink" href="../index.html#stack"><span class="idx">04</span>Stack</a>
+      <a class="navlink" href="../index.html#arch"><span class="idx">05</span>Architecture</a>
+      <a class="navlink" href="../index.html#principles"><span class="idx">06</span>Principles</a>
+      <a class="navlink" href="../index.html#about"><span class="idx">07</span>About</a>
+      <a class="navlink" href="../index.html#contact"><span class="idx">08</span>Contact</a>
       <a class="navlink resume" href="../assets/resume.pdf" target="_blank"><span class="idx">↗</span>Resume</a>
     </nav>
   </div>
@@ -63,7 +69,7 @@
     <div class="eyebrow">v3.2.0 — Release</div>
     <h1 class="subpage-title">ResuMaxxing — an AI career operating system</h1>
     <div class="subpage-meta">
-      <span>next.js · fastapi · openai · postgres</span>
+      <span>next.js · fastapi · openai · postgres · capacitor · clerk</span>
       <span><a href="https://resumaxxing.tech" target="_blank" rel="noopener" style="color:var(--cobalt);">resumaxxing.tech ↗</a></span>
     </div>
   </div>
@@ -71,22 +77,233 @@
   <div class="hero-visual"></div>
 
   <div class="subpage-body">
-    <p>ResuMaxxing is a career operating system built for high-velocity resume tailoring, job application tracking, and AI-driven document review. It's a decoupled, client-server architecture designed to move fast without sacrificing the guardrails that matter when AI is touching someone's actual resume.</p>
 
-    <h2>Architecture</h2>
-    <p>The frontend runs on Next.js App Router with React, TypeScript, and Tailwind, wrapped in Capacitor to ship the same codebase to web, iOS, and Android. The backend is an asynchronous FastAPI service on Python, using SQLAlchemy 2.0 with async drivers and Alembic for schema migrations — built to handle concurrent requests without thread-pool starvation.</p>
+    <p>ResuMaxxing is a career operating system built for high-velocity resume tailoring, job application tracking, and AI-driven document review. It's a decoupled, client-server architecture designed to move fast without sacrificing the guardrails that matter when AI is touching someone's actual resume. Engineered and shipped end-to-end, solo.</p>
 
-    <h2>What it does</h2>
+    <h2>Architecture Overview</h2>
+    <p>The system follows a clean client-server split. The frontend and backend are fully decoupled — they share nothing except an HTTP contract and a JWT token. This means the backend can be scaled, replaced, or load-balanced without touching a line of frontend code, and vice versa.</p>
+
+    <div class="pillar-list">
+      <div class="pillar">
+        <div class="pillar-title">Client Layer</div>
+        <div class="pillar-desc">Next.js App Router with React 19, TypeScript, Tailwind CSS v4, Shadcn UI, and Framer Motion. Zustand manages client-side state. Wrapped in Capacitor to compile the same codebase to native iOS and Android without maintaining separate repositories.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Backend Core</div>
+        <div class="pillar-desc">Async FastAPI on Python 3.12 using SQLAlchemy 2.0 with the aiomysql non-blocking driver. Alembic manages versioned schema migrations. Four isolated micro-service routers: User Profile, Resume Engine, Job Tracker, and Billing & Webhooks.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Identity & Auth</div>
+        <div class="pillar-desc">Clerk Identity Platform issues JWTs. RSA JWKS public keys are fetched and cached locally once at startup — every subsequent token verification runs at CPU speed locally, never round-tripping to the auth server per request.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">AI Infrastructure</div>
+        <div class="pillar-desc">GPT-4o and GPT-4o-mini via the OpenAI API, wired to resume tailoring, skill-gap extraction, roast evaluation, and guest bullet optimization. All invocations are wrapped in strict structural and anti-hallucination guardrails.</div>
+      </div>
+    </div>
+
+    <h2>AI Prompt Engineering & Guardrail Pipeline</h2>
+    <p>Generative AI on a user's resume is a high-stakes operation. A hallucinated skill or fabricated metric on a resume someone submits to an employer is not a minor bug — it's a trust violation. Every model invocation in ResuMaxxing is constrained by a four-layer guardrail system:</p>
     <ul>
-      <li><strong>AI-driven tailoring:</strong> GPT-4o and GPT-4o-mini power resume tailoring, guest bullet optimization, and skill-gap extraction against a target job description.</li>
-      <li><strong>Anti-hallucination guardrails:</strong> strict JSON-schema enforcement, exact input-to-output bullet matching, and explicit prompt constraints that forbid introducing unstated skills, technologies, or metrics.</li>
-      <li><strong>Document engine:</strong> pdfplumber and python-docx handle resume parsing and DOCX export, avoiding expensive vector-layout parsing that can freeze on complex PDFs.</li>
-      <li><strong>Auth:</strong> Clerk-based identity with RSA JWKS keys fetched and cached once at startup, so token verification runs locally at CPU-microsecond speed instead of round-tripping to an auth server on every request.</li>
-      <li><strong>Billing:</strong> Lemon Squeezy webhooks verified with constant-time HMAC SHA-256 signatures, driving tiered access (<code>premium_1</code>, <code>premium_2</code>) through idempotent background workers.</li>
+      <li><strong>Strict JSON schema enforcement:</strong> All generative endpoints use <code>response_format={"type":"json_object"}</code> to guarantee deterministic, parseable responses. The model cannot return freeform text.</li>
+      <li><strong>Exact 1-to-1 bullet matching:</strong> Bullet customization algorithms extract individual sentences from the raw resume and enforce that the output count matches exactly — no merging bullets, no splitting bullets.</li>
+      <li><strong>Anti-hallucination vocabulary constraints:</strong> System prompts explicitly prohibit introducing technologies, skills, or metrics not present in the input. Synonym replacement is bound strictly to exact action-verb matches in the target job description.</li>
+      <li><strong>Domain isolation:</strong> Prompts forbid converting domain-specific achievements across disciplines. Frontend wins stay frontend wins. Backend achievements are not reframed as infrastructure wins.</li>
     </ul>
 
+    <h2>Enterprise Billing Architecture</h2>
+    <p>The billing system is event-driven and non-blocking by design. Lemon Squeezy sends signed webhook events on subscription changes. The architecture has three hard requirements: instant acknowledgment, idempotency, and no dead-session bugs.</p>
+    <ul>
+      <li><strong>Instant acknowledgment (&lt;50ms):</strong> The webhook endpoint returns HTTP 200 immediately after HMAC-SHA256 signature verification using <code>hmac.compare_digest</code> — constant-time comparison to prevent timing attacks. The actual tier upgrade runs in a FastAPI <code>BackgroundTask</code> to avoid Lemon Squeezy retry timeouts.</li>
+      <li><strong>Independent session lifecycle:</strong> Background tasks create their own <code>AsyncSessionLocal()</code> database sessions. The HTTP request context is already closed by the time the background task runs — using the request session would cause a dead-session exception.</li>
+      <li><strong>Idempotency guard:</strong> Event IDs are logged before any tier upgrade. Duplicate webhooks from network retries are detected and silently skipped — no double-crediting of user quotas.</li>
+    </ul>
+
+    <h2>Security & Privacy</h2>
+    <ul>
+      <li><strong>GDPR right-to-be-forgotten:</strong> Listens for Clerk <code>user.deleted</code> webhooks verified via Svix cryptographic signatures. On receipt, the system triggers a cascade deletion across all database tables — resume versions, vault snapshots, tracked jobs, activity telemetry — automatically.</li>
+      <li><strong>IDOR prevention:</strong> Every database query filters by both the record ID and the authenticated user's ID. A malicious user querying another user's resume version or tracked job receives HTTP 404, not 403 — no information leakage about resource existence.</li>
+      <li><strong>Content Security Policy:</strong> CSP middleware accommodates <code>capacitor://localhost</code> (iOS) and <code>http://localhost</code> (Android) origins with strict <code>frame-ancestors: DENY</code> shielding.</li>
+    </ul>
+
+    <h2>Performance Design</h2>
+    <ul>
+      <li><strong>Decoupled JWKS verification:</strong> Auth overhead is eliminated by caching RSA public keys once at boot. Token verification is local and runs in microseconds.</li>
+      <li><strong>Non-blocking telemetry:</strong> Activity logs (<code>TARGET_ACQUIRED</code>, <code>ZAP_GENERATED</code>) are dispatched asynchronously, preventing database lock contention from slowing primary API responses.</li>
+      <li><strong>Async database connections:</strong> SQLAlchemy 2.0 with <code>aiomysql</code> uses non-blocking connection pools. Under concurrent load, requests yield to the event loop rather than blocking threads.</li>
+      <li><strong>Optimized PDF parsing:</strong> Text extraction during resume roasts avoids expensive vector-layout parsing steps that can freeze on complex PDFs.</li>
+    </ul>
+
+    <h2>Rate Limiting Matrix</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Endpoint</th>
+            <th>Route</th>
+            <th>Limit</th>
+            <th>Strategy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Guest Tailor</strong></td>
+            <td><code>POST /resumes/guest-tailor</code></td>
+            <td>5 / min</td>
+            <td>Public IP rate shield</td>
+          </tr>
+          <tr>
+            <td><strong>Guest Roast</strong></td>
+            <td><code>POST /resumes/guest-roast</code></td>
+            <td>5 / min</td>
+            <td>PDF type check + 10MB stream guard</td>
+          </tr>
+          <tr>
+            <td><strong>Resume Tailor</strong></td>
+            <td><code>POST /resumes/generate</code></td>
+            <td>10 / min</td>
+            <td>User ID limiter + quota check + IDOR guard</td>
+          </tr>
+          <tr>
+            <td><strong>DOCX Export</strong></td>
+            <td><code>POST /resumes/{id}/export-docx</code></td>
+            <td>30 / min</td>
+            <td>Subscription tier verification (<code>premium_1</code>/<code>premium_2</code>)</td>
+          </tr>
+          <tr>
+            <td><strong>Job Creation</strong></td>
+            <td><code>POST /jobs/</code></td>
+            <td>30 / min</td>
+            <td>Input sanitization (<code>sanitize_text</code>, <code>sanitize_url</code>)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Feature → Endpoint Mapping</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Endpoint</th>
+            <th>Infrastructure</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Guest Bullet Tailoring</strong></td>
+            <td><code>POST /resumes/guest-tailor</code></td>
+            <td>GPT-4o-mini, strict 1-to-1 sentence extraction</td>
+          </tr>
+          <tr>
+            <td><strong>PDF Resume Roasting</strong></td>
+            <td><code>POST /resumes/guest-roast</code></td>
+            <td>pdfplumber text/hyperlink extraction + AI roast engine</td>
+          </tr>
+          <tr>
+            <td><strong>Master Resume AI Tailoring</strong></td>
+            <td><code>POST /resumes/generate</code></td>
+            <td>GPT-4o + versioning engine (ResumeVersion model)</td>
+          </tr>
+          <tr>
+            <td><strong>Technical Skill Gap Analysis</strong></td>
+            <td><code>POST /resumes/skill-gap</code></td>
+            <td>Persistent gap engine (SkillGap model, urgency weights)</td>
+          </tr>
+          <tr>
+            <td><strong>Job Description URL Extraction</strong></td>
+            <td><code>POST /jobs/extract-url</code></td>
+            <td>Async scraper + BeautifulSoup parser</td>
+          </tr>
+          <tr>
+            <td><strong>Editable DOCX Export</strong></td>
+            <td><code>POST /resumes/{id}/export-docx</code></td>
+            <td>python-docx buffer stream, tier-guarded (premium)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Technology Stack</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Frontend framework</td>
+            <td>Next.js App Router</td>
+            <td>Server & client components, SSG/SSR hybrid rendering</td>
+          </tr>
+          <tr>
+            <td>Mobile runtime</td>
+            <td>Capacitor</td>
+            <td>Native bridging for Android & iOS builds from one codebase</td>
+          </tr>
+          <tr>
+            <td>Styling & UI</td>
+            <td>Tailwind CSS v4 + Shadcn UI + Framer Motion</td>
+            <td>Utility-first design system with micro-animations</td>
+          </tr>
+          <tr>
+            <td>State management</td>
+            <td>Zustand</td>
+            <td>Lightweight reactive client-side store</td>
+          </tr>
+          <tr>
+            <td>Backend framework</td>
+            <td>FastAPI (Python 3.12)</td>
+            <td>High-concurrency async ASGI web server</td>
+          </tr>
+          <tr>
+            <td>ORM & database</td>
+            <td>SQLAlchemy 2.0 + Alembic</td>
+            <td>Async database access & versioned migrations via aiomysql</td>
+          </tr>
+          <tr>
+            <td>Authentication</td>
+            <td>Clerk Auth</td>
+            <td>Passwordless, OAuth, JWKS JWT decoding with local key cache</td>
+          </tr>
+          <tr>
+            <td>AI integration</td>
+            <td>OpenAI API (GPT-4o & GPT-4o-mini)</td>
+            <td>Resume tailoring, roasting, skill gap analysis</td>
+          </tr>
+          <tr>
+            <td>Document engine</td>
+            <td>pdfplumber & python-docx</td>
+            <td>PDF extraction & DOCX resume generation</td>
+          </tr>
+          <tr>
+            <td>Logging & telemetry</td>
+            <td>structlog (JSON logging)</td>
+            <td>Structured production logging & ISO context rendering</td>
+          </tr>
+          <tr>
+            <td>Rate limiting</td>
+            <td>SlowAPI</td>
+            <td>IP and user ID based API rate throttling</td>
+          </tr>
+          <tr>
+            <td>Billing integration</td>
+            <td>Lemon Squeezy + Svix Webhooks</td>
+            <td>Subscription tiering & HMAC-signed event handling</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <h2>Notes</h2>
-    <p>[Placeholder — this is a good place to add your own reflection: what was hardest to get right, what you'd change with more time, or a specific decision you're proud of. Replace this paragraph with that.]</p>
+    <p>The hardest part of this project wasn't the AI integration — it was making the AI integration trustworthy. Anyone can wire up an OpenAI call and get a plausible-looking resume out. Getting it to never fabricate, never merge bullets, never shift a frontend achievement into backend territory — that required treating prompt engineering as a specification problem, not a prompt-tweeking problem. Every guardrail was written before the endpoint was, not after.</p>
+    <p>The billing architecture also taught me something worth keeping: the moment a webhook returns 200, you've acknowledged receipt. What happens after that is your responsibility, not the payment gateway's. Designing for that separation — instant ack, async work, idempotency at every retry — is what separates a payment integration from a payment incident waiting to happen.</p>
+
   </div>
 
   <div class="subpage-nav">

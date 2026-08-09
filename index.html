@@ -28,6 +28,9 @@
   <a href="#work">Releases</a>
   <a href="#notes">Notes</a>
   <a href="#log">Changelog</a>
+  <a href="#stack">Stack</a>
+  <a href="#arch">Architecture</a>
+  <a href="#principles">Principles</a>
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
   <a href="assets/resume.pdf" target="_blank">Resume ↗</a>
@@ -46,8 +49,11 @@
       <a class="navlink" data-target="work"><span class="idx">01</span>Releases</a>
       <a class="navlink" data-target="notes"><span class="idx">02</span>Notes</a>
       <a class="navlink" data-target="log"><span class="idx">03</span>Changelog</a>
-      <a class="navlink" data-target="about"><span class="idx">04</span>About</a>
-      <a class="navlink" data-target="contact"><span class="idx">05</span>Contact</a>
+      <a class="navlink" data-target="stack"><span class="idx">04</span>Stack</a>
+      <a class="navlink" data-target="arch"><span class="idx">05</span>Architecture</a>
+      <a class="navlink" data-target="principles"><span class="idx">06</span>Principles</a>
+      <a class="navlink" data-target="about"><span class="idx">07</span>About</a>
+      <a class="navlink" data-target="contact"><span class="idx">08</span>Contact</a>
       <a class="navlink resume" href="assets/resume.pdf" target="_blank"><span class="idx">↗</span>Resume</a>
     </nav>
   </div>
@@ -196,6 +202,250 @@
           <div class="log-body"><p>[Placeholder] A new experience, talk, or project milestone worth logging.</p></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="inner" style="max-width:640px;">
+      <div class="eyebrow reveal">Stack</div>
+      <h2 class="sec-title reveal">The tools I reach for, and why.</h2>
+    </div>
+
+    <div class="stack-categories reveal">
+
+      <div class="stack-category">
+        <div class="stack-category-label">Language</div>
+        <div class="stack-rows">
+          <div class="stack-row">
+            <div class="stack-name">TypeScript</div>
+            <div class="stack-why">The type system surfaces contract violations before they become runtime surprises. Worth the compile step every time.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Python</div>
+            <div class="stack-why">The fastest path from idea to working async service, especially when the AI ecosystem lives here.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Java</div>
+            <div class="stack-why">Spring Boot's maturity pays off at scale — battle-tested security, JPA, and async threading that actually performs under load.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-category-label">Backend</div>
+        <div class="stack-rows">
+          <div class="stack-row">
+            <div class="stack-name">FastAPI</div>
+            <div class="stack-why">Async-first, auto-documented, and honest about what it is. The right tool when Python is already the right language.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Spring Boot</div>
+            <div class="stack-why">Multi-tenant, OWASP-grade security, JPA specifications, and scheduled background workers — it handles the heavyweight requirements.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">SQLAlchemy 2.0</div>
+            <div class="stack-why">Async ORM that doesn't fight you when you need to drop to raw SQL for complex aggregations.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-category-label">Frontend</div>
+        <div class="stack-rows">
+          <div class="stack-row">
+            <div class="stack-name">Next.js</div>
+            <div class="stack-why">App Router gives you RSC, SSR, and SSG in one model. No more choosing between frameworks for different rendering needs.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">React</div>
+            <div class="stack-why">The component model is still the clearest way to reason about complex UI state. The ecosystem is unmatched.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Tailwind CSS</div>
+            <div class="stack-why">Constraint-based design keeps visual decisions consistent without a separate design system to maintain.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-category-label">Data</div>
+        <div class="stack-rows">
+          <div class="stack-row">
+            <div class="stack-name">PostgreSQL</div>
+            <div class="stack-why">Relational integrity, rich indexing, and a query planner that rarely surprises you. The default choice until there's a reason not to be.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Flyway / Alembic</div>
+            <div class="stack-why">Schema migrations should be versioned and reproducible. Manual DDL scripts in a shared database are how incidents happen.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-category-label">AI &amp; Integrations</div>
+        <div class="stack-rows">
+          <div class="stack-row">
+            <div class="stack-name">OpenAI GPT-4o</div>
+            <div class="stack-why">Structured outputs + strict prompt guardrails make generative AI reliable enough for user-facing features.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Clerk Auth</div>
+            <div class="stack-why">JWKS-based decoupled identity with JIT provisioning — auth complexity that's already solved, not rebuilt.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Capacitor</div>
+            <div class="stack-why">One Next.js codebase ships to web, iOS, and Android. The native bridge handles file sharing, haptics, and printing without separate codebases.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack-category">
+        <div class="stack-category-label">Tooling</div>
+        <div class="stack-rows">
+          <div class="stack-row">
+            <div class="stack-name">GitHub Actions</div>
+            <div class="stack-why">CI with live service containers (Postgres 16) and weekly automated security audits. The pipeline should catch what code review misses.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Bucket4j / SlowAPI</div>
+            <div class="stack-why">Per-IP token bucket rate limiting at the gateway layer. DoS protection that doesn't require a separate infrastructure layer.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="arch">
+    <div class="inner" style="max-width:640px;">
+      <div class="eyebrow reveal">Architecture</div>
+      <h2 class="sec-title reveal">Public blueprints of private systems.</h2>
+    </div>
+    <p class="arch-intro reveal">Both platforms follow an open-specification model: the architecture is documented publicly in detail — system layers, data flow, security contracts, API domain maps — while the proprietary source code stays private. Good design should be explainable without exposing implementation.</p>
+
+    <div class="arch-panels reveal">
+
+      <div class="arch-panel">
+        <div class="arch-panel-head">
+          <div class="arch-panel-title"><span class="arch-dot"></span>ResuMaxxing — AI Career Operating System</div>
+          <span class="arch-panel-badge">v3.2.0</span>
+        </div>
+        <div class="arch-panel-body">
+          <div class="arch-tier-list">
+            <div class="arch-tier">
+              <div class="arch-tier-name">Client Layer</div>
+              <div class="arch-tier-desc">Next.js App Router (React 19, TypeScript, Tailwind v4) wrapped in Capacitor for native iOS &amp; Android compilation from a single codebase. Zustand for client state, Framer Motion for transitions, Axios with exponential-backoff retry interceptor.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">Security Gateway</div>
+              <div class="arch-tier-desc">Clerk Identity Platform for JWT-based auth. RSA JWKS public keys are fetched once at startup and cached locally — token verification runs at CPU speed, never round-tripping to the auth server per request. SlowAPI rate limiting (5 req/min on public endpoints) with a 10MB payload guard and strict CSP headers.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">Backend Core</div>
+              <div class="arch-tier-desc">Async FastAPI service on Python 3.12, using SQLAlchemy 2.0 with aiomysql non-blocking drivers for zero thread-pool starvation under concurrent load. Alembic for versioned schema migrations. Four micro-service routers: User Profile, Resume Engine, Job Tracker, Billing &amp; Webhooks.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">AI Engine</div>
+              <div class="arch-tier-desc">GPT-4o and GPT-4o-mini power resume tailoring, skill-gap analysis, and document roasting. Strict JSON-schema enforcement, exact 1-to-1 bullet extraction, explicit anti-hallucination constraints: no unstated skills, no domain-crossing, no metric fabrication.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">Billing</div>
+              <div class="arch-tier-desc">Lemon Squeezy subscriptions with HMAC-SHA256 webhook verification via constant-time digest comparison. Returns HTTP 200 in under 50ms then upgrades user tiers in an idempotent FastAPI BackgroundTask — preventing double-credit on duplicate webhook retries.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">Privacy</div>
+              <div class="arch-tier-desc">GDPR right-to-be-forgotten enforced via Svix-verified Clerk deletion webhooks — cascades across all tables automatically. IDOR prevention enforced at the SQL query level: every record access filters by both record ID and owner user ID.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-panel">
+        <div class="arch-panel-head">
+          <div class="arch-panel-title"><span class="arch-dot"></span>Eruscent — Institutional Peer Tutoring Platform</div>
+          <span class="arch-panel-badge">v2.8.0</span>
+        </div>
+        <div class="arch-panel-body">
+          <div class="arch-tier-list">
+            <div class="arch-tier">
+              <div class="arch-tier-name">Tenant Hierarchy</div>
+              <div class="arch-tier-desc">Four-level multi-tenancy: University → Campus → Department → User. Tenant boundaries are enforced at both the database query layer and the Spring service layer — no cross-tenant data leakage is possible by design, not by convention.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">Identity</div>
+              <div class="arch-tier-desc">Clerk JWKS-based stateless authentication. Just-In-Time user provisioning: if a user authenticates but doesn't exist in Postgres, the backend auto-provisions their record. Identity self-healing: name and avatar are synced on every request if the JWT claims differ from the DB record.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">Session Engine</div>
+              <div class="arch-tier-desc">Dual session modes: 1-on-1 private bookings with direct tutor acceptance, 15-minute pending auto-expiry, and group lobbies with dynamic capacity bounds and 50% group pricing. JPA optimistic locking (@Version) prevents race conditions during simultaneous enrollment — conflicting second writes get HTTP 409.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">Security</div>
+              <div class="arch-tier-desc">OWASP Top 10 audit with Bucket4j token-bucket rate limiting per IP: 5 req/min on auth endpoints, 2 req/hr on public contact. Zero-trust peer chat: access validated per message — group chat revokes immediately on enrollment cancellation. Tamper-evident audit log with HMAC-SHA256 digital signatures and async PII scrubbing.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">Background Engines</div>
+              <div class="arch-tier-desc">Dedicated thread pools: auditExecutor (2 core/5 max) for HMAC log persistence, taskExecutor (5 core/10 max) for transactional email. Nightly cron: DatabaseCleanupService purges expired time slots and auto-completes stale sessions. GroupSessionScheduler fires low-attendance alerts via JavaMailSender.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">Analytics &amp; Caching</div>
+              <div class="arch-tier-desc">Spring @Cacheable abstraction over global KPI aggregations and university heatmap node trees — super-admin dashboard reloads hit cache, not the database. Dynamic JPA Criteria API search across tutor names, bios, and course codes with distinct deduplication. Timezone-aware gamification streak engine (Asia/Manila, America/New_York, etc.).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="principles">
+    <div class="inner" style="max-width:640px;">
+      <div class="eyebrow reveal">Principles</div>
+      <h2 class="sec-title reveal">How I think about software.</h2>
+    </div>
+
+    <div class="principles-list">
+
+      <div class="principle-item reveal">
+        <div class="principle-num">01</div>
+        <div class="principle-body">
+          <div class="principle-stmt">Cut until only what matters is left.</div>
+          <div class="principle-expand">Every abstraction carries a cost — cognitive load, maintenance burden, indirection at 2am. Pay it deliberately or not at all. The final design should feel inevitable, not elaborate.</div>
+        </div>
+      </div>
+
+      <div class="principle-item reveal">
+        <div class="principle-num">02</div>
+        <div class="principle-body">
+          <div class="principle-stmt">Reliability is a writing problem as much as an engineering one.</div>
+          <div class="principle-expand">If you can't explain why a system behaves the way it does in plain text, it will surprise you at the worst moment. Runbooks, structured telemetry, and honest error contracts are part of the work, not aftermath.</div>
+        </div>
+      </div>
+
+      <div class="principle-item reveal">
+        <div class="principle-num">03</div>
+        <div class="principle-body">
+          <div class="principle-stmt">The best infrastructure is the kind people forget exists.</div>
+          <div class="principle-expand">Good tooling disappears into the workflow. Migrations run, CI passes, deploys go through. The goal is a system so well-designed that its absence in conversation is the loudest proof it's working.</div>
+        </div>
+      </div>
+
+      <div class="principle-item reveal">
+        <div class="principle-num">04</div>
+        <div class="principle-body">
+          <div class="principle-stmt">Security is a first-class feature, not a retrofit.</div>
+          <div class="principle-expand">OWASP compliance, zero-trust messaging, HMAC-signed audit pipelines, IDOR isolation at the SQL level — these are built in from day one because security bolted on after the fact is always incomplete.</div>
+        </div>
+      </div>
+
+      <div class="principle-item reveal">
+        <div class="principle-num">05</div>
+        <div class="principle-body">
+          <div class="principle-stmt">Ship the spec before the code.</div>
+          <div class="principle-expand">A public architecture document forces clarity that protects the codebase. If the design can't be explained without the implementation, the design isn't finished. The spec is the contract; the code is one instance of it.</div>
+        </div>
+      </div>
+
     </div>
   </section>
 
