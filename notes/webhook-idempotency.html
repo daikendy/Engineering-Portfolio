@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What six months of on-call taught me — Kenneth Torcuator</title>
-<meta name="description" content="Reliability is a writing problem as much as an engineering one.">
+<title>Designing for the webhook that arrives twice — Kenneth Torcuator</title>
+<meta name="description" content="Payment webhooks will eventually duplicate. The question is whether your system notices.">
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -61,29 +61,32 @@
   <div class="subpage-header">
     <a href="../index.html#notes" class="back-link">← All notes</a>
     <div class="eyebrow">Notes</div>
-    <h1 class="subpage-title">What six months of on-call taught me</h1>
+    <h1 class="subpage-title">Designing for the webhook that arrives twice</h1>
     <div class="subpage-meta">
-      <span>Nov 2025</span>
-      <span>9 min read</span>
+      <span>Aug 2026</span>
+      <span>5 min read</span>
     </div>
   </div>
 
   <div class="subpage-body">
-    <div class="placeholder-note">
-      [Placeholder post] This page is a working template — the layout, meta, and navigation are fully wired up. Replace this block with your real writing whenever it's ready. A good structure to follow: open with the problem, walk through what you tried, land on what you'd tell someone hitting the same wall.
-    </div>
-    <p>Reliability is a writing problem as much as an engineering one.</p>
+    <p>Payment webhooks will eventually duplicate. Not because a provider's code is broken, but because the honest contract of most webhook systems is "at least once," not "exactly once." Building ResuMaxxing's billing layer around that assumption up front turned out to matter more than any single feature in it.</p>
+
     <h2>The setup</h2>
-    <p>[Placeholder — describe the situation or problem that prompted this post.]</p>
-    <h2>What I tried</h2>
-    <p>[Placeholder — walk through your approach, including any dead ends.]</p>
+    <p>ResuMaxxing's subscription tiers are driven entirely by Lemon Squeezy webhooks — <code>order_created</code>, subscription updates, cancellations. Each one has to update a user's access level in the database. The naive version of this is simple: receive event, verify it's really from Lemon Squeezy, update the row. That's correct exactly until the same event arrives twice, which webhook providers do on purpose — timeouts, retries, and at-least-once delivery guarantees mean duplicates aren't an edge case, they're part of the spec.</p>
+
+    <h2>Designing around it</h2>
+    <p>Two things had to be true before any event was trusted, and one thing had to be true after.</p>
+    <p>First, every incoming request is verified with a constant-time HMAC SHA-256 signature check against the raw payload. Constant-time matters here specifically — a naive string comparison leaks timing information that, in theory, lets an attacker guess a valid signature one byte at a time. It's a small detail that costs nothing to get right and is genuinely bad to get wrong.</p>
+    <p>Second, the handler itself is idempotent: applying the same event twice has to leave the database in the same state as applying it once. In practice that means keying off the event's own ID rather than just its payload, so a replayed <code>order_created</code> doesn't double-grant a subscription tier or double-log activity.</p>
+    <p>Third, the actual database write happens through a non-blocking background worker rather than inline in the request handler. Lemon Squeezy expects a fast response to the webhook itself — it's not the place to also be doing a synchronous write under load. Decoupling "acknowledge the event" from "apply the event" keeps the webhook endpoint fast regardless of what's happening on the database side.</p>
+
     <h2>What I'd tell someone else</h2>
-    <p>[Placeholder — the actual takeaway, in plain terms.]</p>
+    <p>If you're integrating any payment webhook, don't treat "handle duplicate events" as a hardening pass you'll get to later. Design the write to be idempotent from the first line of the handler, because retrofitting idempotency after a subscription tier has already been double-granted in production is a much worse afternoon than building it in on day one.</p>
   </div>
 
   <div class="subpage-nav">
-    <a href="invisible-deploy-tools.html">← On writing deploy tools nobody notices</a>
-    <a href="webhook-idempotency.html">Designing for the webhook that arrives twice →</a>
+    <a href="on-call-lessons.html">← What six months of on-call taught me</a>
+    <a href="../index.html#notes">Back to all notes →</a>
   </div>
 </main>
 

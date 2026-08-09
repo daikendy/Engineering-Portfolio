@@ -69,16 +69,22 @@
   </div>
 
   <div class="subpage-body">
-    <div class="placeholder-note">
-      [Placeholder post] This page is a working template — the layout, meta, and navigation are fully wired up. Replace this block with your real writing whenever it's ready. A good structure to follow: open with the problem, walk through what you tried, land on what you'd tell someone hitting the same wall.
-    </div>
-    <p>Most bugs I've shipped came from a model that was almost right.</p>
+    <p>Most bugs I've shipped came from a model that was almost right. The one I want to write about here is smaller than it sounds: two students, one open tutoring slot, both hitting "book" close enough together that the usual mental model of "check, then write" quietly falls apart.</p>
+
     <h2>The setup</h2>
-    <p>[Placeholder — describe the situation or problem that prompted this post.]</p>
-    <h2>What I tried</h2>
-    <p>[Placeholder — walk through your approach, including any dead ends.]</p>
+    <p>Eruscent's session engine lets a student book a 1:1 slot or join a group lobby with a capacity cap. Somewhere in early testing, two test accounts claimed the same slot within the same second. Nothing crashed. Nothing logged an error. The system just quietly let both bookings through — which is worse than a crash, because it fails silently and shows up later as a very confused tutor with two students at their door.</p>
+
+    <h2>The mental model that mattered</h2>
+    <p>The instinct most people reach for first is locking: grab a lock on the row, do the check, release it. That works, but it means every booking request now waits in line behind every other one touching that slot, even when 99% of the time there's no actual conflict. It solves correctness by trading away throughput you didn't need to give up.</p>
+    <p>The model I designed around instead: assume no conflict, and let the database prove me wrong. Every bookable row carries a version number. A booking request reads the current version, does its work, and writes back — but only if the version hasn't changed underneath it. If it has, someone else got there first, and the write is rejected outright rather than silently overwriting their claim.</p>
+    <p>That's the actual shift: stop thinking about "protecting the row while I use it" and start thinking about "proving the row is still what I think it is at the moment I commit." It's a small reframe, but it changes what you build — instead of a lock you hold, you get a version check you assert.</p>
+
+    <h2>How it's built</h2>
+    <p>In practice this is JPA's optimistic locking: a <code>@Version</code> field on the bookable entity, incremented automatically on every update. When two requests race, the second one to commit gets a stale-version failure instead of a silent overwrite, which the API surfaces as a clean <code>409 Conflict</code> — a real, explicit signal the client can retry or show to the user, instead of a bug report three weeks later.</p>
+    <p>The nice side effect is what it does to the common case. Most bookings never collide, so most requests never pay a locking cost at all. The system stays fast for the 99% and only pays the "someone else got here first" cost exactly when it's real.</p>
+
     <h2>What I'd tell someone else</h2>
-    <p>[Placeholder — the actual takeaway, in plain terms.]</p>
+    <p>If your first instinct for a concurrency problem is "add a lock," it's worth pausing on why. A lock protects against a conflict you're assuming will happen constantly. Optimistic locking protects against a conflict you're betting will happen rarely — and lets the database, not your application code, be the source of truth for "did this actually change." For something like slot booking, where collisions are the exception, that bet is almost always right.</p>
   </div>
 
   <div class="subpage-nav">
