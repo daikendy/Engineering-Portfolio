@@ -40,6 +40,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Hero headline split-word reveal animation (preserves <em> emphasis tags)
+  const heroHead = document.getElementById('heroHead');
+  if (heroHead) {
+    const nodes = Array.from(heroHead.childNodes);
+    let html = '';
+    nodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const words = node.textContent.split(' ').filter(w => w.length > 0);
+        words.forEach(w => { html += `<span class="word"><span>${w}</span></span> `; });
+      } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'EM') {
+        const words = node.textContent.split(' ').filter(w => w.length > 0);
+        const emWords = words.map(w => `<span class="word"><span>${w}</span></span>`).join(' ');
+        html += `<em>${emWords}</em> `;
+      }
+    });
+    heroHead.innerHTML = html.trim();
+    if (window.gsap) {
+      gsap.to('#heroHead .word span', {
+        y: '0%', duration: 1, ease: 'power3.out', stagger: 0.03, delay: 0.1
+      });
+    }
+  }
+
   // Scroll-spy nav (index only — sections must exist)
   const sections = document.querySelectorAll('main section[id]');
   const navlinks = document.querySelectorAll('.navlink[data-target]');
