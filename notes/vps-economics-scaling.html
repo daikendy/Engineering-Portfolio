@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Economics of Infrastructure: Why Managed PaaS Crushes Student Budgets — Kenneth Torcuator</title>
+<meta name="description" content="Why Railway usage-based billing forced an infrastructure migration to flat-rate VPS, Docker, and Coolify.">
+<meta property="og:title" content="The Economics of Infrastructure: Managed PaaS vs. Flat-Rate VPS">
+<meta property="og:description" content="Analyzing the trade-offs between Railway PaaS usage billing and self-hosted VPS containers for Eruscent & ResuMaxxing.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Economics of Infrastructure — Kenneth Torcuator">
+<meta name="twitter:description" content="Why managed PaaS usage billing crushes budgets, and how Docker + Coolify on a VPS solves predictable scaling.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+<script src="../assets/data.js"></script>
+<script src="../assets/components.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body class="subpage">
+
+<div id="dot"></div>
+
+<div id="site-topbar"></div>
+<div id="site-mobile-menu"></div>
+<aside id="site-sidebar"></aside>
+
+<main>
+  <div class="subpage-header">
+    <a href="../index.html#notes" class="back-link">← All notes</a>
+    <div class="eyebrow">Notes — Infrastructure &amp; Systems</div>
+    <h1 class="subpage-title">The Economics of Infrastructure: Why Managed PaaS Crushes Student Budgets</h1>
+    <div class="subpage-meta">
+      <span>Aug 2026</span>
+      <span>5 min read</span>
+      <span>Infrastructure &amp; DevOps</span>
+    </div>
+  </div>
+
+  <div class="hero-visual" style="height:auto; min-height:auto; padding:16px 0; background:transparent; border:none;">
+    <img src="../assets/vps-architecture.jpg" alt="Current Setup vs Planned Setup Infrastructure Diagram" style="max-width:680px; width:100%; height:auto; border-radius:12px; border:1px solid var(--hairline); box-shadow:0 8px 24px rgba(0,0,0,0.04); display:block; margin:0 auto;">
+  </div>
+
+  <div class="subpage-body" style="margin-top:40px;">
+    
+    <p class="lead" style="font-size:16.5px; color:var(--ink); font-family:'Fraunces',serif; line-height:1.6;">
+      Eruscent and ResuMaxxing are live, but I realized this week that real traffic would completely crush our budget. The catch? The code isn't the problem.
+    </p>
+
+    <p>Spring Boot and FastAPI can handle concurrent load just fine. The bottleneck isn't the architecture — it's the economics.</p>
+
+    <p>Railway's Hobby plan can scale to meet real traffic, but it uses usage-based billing, so you pay per unit of CPU, RAM, and egress. My monthly bill would spike right along with my traffic.</p>
+
+    <h2>Down the Infrastructure Rabbit Hole</h2>
+    <p>That realization sent me down an infrastructure rabbit hole. I'm sharing what I learned, not as a <em>"here's a tutorial,"</em> but as <em>"here's my current understanding, feel free to correct me"</em>:</p>
+
+    <div class="pillar-list" style="margin:24px 0 32px;">
+      <div class="pillar">
+        <div class="pillar-title">VPS vs. Managed PaaS</div>
+        <div class="pillar-desc">A VPS solves the cost-efficiency problem. You get predictable, dedicated hardware for a flat fee. The tradeoff is you configure everything yourself, unless you use something like Coolify to simplify it.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Docker Containers</div>
+        <div class="pillar-desc">Packages your backend into a container so you can run it consistently anywhere without host-level dependency conflicts.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Kubernetes (K8s)</div>
+        <div class="pillar-desc">I used to think K8s was mainly about rerouting traffic when something crashes (load balancing). Turns out, it's the full orchestrator that decides where containers run, restarts dead nodes, and handles automatic scaling.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-title">Horizontal vs. Vertical Scaling</div>
+        <div class="pillar-desc">Horizontal means adding more containers or servers. Vertical means making one server stronger (more CPU/RAM).</div>
+      </div>
+    </div>
+
+    <h2>The Scaling Realization</h2>
+    <p>The part that clicked for me: you don't just pick one over the other based on preference. You look at what is actually bottlenecked. Server maxed out with room left in the container? Scale vertically. Need redundancy so one crash doesn't take the whole app down? Scale horizontally.</p>
+
+    <div class="info-block" style="margin:28px 0;">
+      <strong>Where I landed for now:</strong> Skip Kubernetes — it's overkill at our current scale. Get a real VPS (Hetzner / DigitalOcean). Start vertical, and go horizontal when traffic actually forces it.
+    </div>
+
+    <h2>Closing Reflection</h2>
+    <p>As a 3rd-year Computer Engineering student, I'm trying to build the habit of catching problems before they hit production rather than after. But I also know premature optimization is a trap.</p>
+
+    <p style="font-family:'Fraunces',serif; font-size:18px; color:var(--cobalt); font-style:italic; margin-top:28px;">
+      Senior engineers: am I overengineering this by moving to a VPS now, or is it the right move to secure predictable infrastructure costs before real traffic hits?
+    </p>
+
+  </div>
+
+  <div class="subpage-nav">
+    <a href="../index.html#notes">← Back to all notes</a>
+    <a href="orm-tradeoffs.html">Next: Why we moved off our ORM →</a>
+  </div>
+</main>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

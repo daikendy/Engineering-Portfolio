@@ -243,6 +243,9 @@ section{ padding:120px 64px; border-bottom:1px solid var(--hairline); position:r
 .badge-added{ background:#E7F5EC; color:#22823E; }
 .badge-improved{ background:var(--cobalt-wash); color:var(--cobalt-deep); }
 .badge-fixed{ background:#FDEEE8; color:#B04E29; }
+.badge-refactored{ background:#F3E8FF; color:#6B21A8; }
+.badge-security{ background:#FEF3C7; color:#92400E; }
+.badge-shipped{ background:#D1FAE5; color:#065F46; }
 .log-body p{ font-size:14.5px; color:var(--ink-soft); line-height:1.6; }
 .log-body p strong{ color:var(--ink); font-weight:500; }
 .log-row{ display:flex; gap:14px; align-items:flex-start; flex:1; }
