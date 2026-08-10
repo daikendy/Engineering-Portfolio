@@ -137,4 +137,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Register PWA Service Worker for offline support and app installation
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      const swPath = document.body.classList.contains('subpage') ? '../sw.js' : './sw.js';
+      navigator.serviceWorker.register(swPath)
+        .then(reg => console.log('Portfolio PWA Service Worker Registered:', reg.scope))
+        .catch(err => console.warn('PWA SW registration skipped:', err));
+    });
+  }
 });

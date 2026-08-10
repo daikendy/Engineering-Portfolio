@@ -1,0 +1,24 @@
+{
+  "name": "Kenneth Torcuator — Software Engineer",
+  "short_name": "KT Portfolio",
+  "description": "Full-Stack Software Engineer portfolio specializing in Spring Boot, Next.js, FastAPI, and AI SaaS architecture.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FAFAF8",
+  "theme_color": "#FAFAF8",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
