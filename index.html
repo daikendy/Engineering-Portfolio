@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
+<script src="assets/data.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
@@ -61,15 +62,15 @@
       <a class="navlink" data-target="exp"><span class="idx">07</span>Experience</a>
       <a class="navlink" data-target="about"><span class="idx">08</span>About</a>
       <a class="navlink" data-target="contact"><span class="idx">09</span>Contact</a>
-      <a class="navlink resume" href="assets/resume.pdf" target="_blank"><span class="idx">↗</span>Resume</a>
+      <a class="navlink resume" href="assets/resume.pdf" target="_blank" data-site-field="resumeUrl" data-site-attr="href"><span class="idx">↗</span>Resume</a>
     </nav>
   </div>
   <div class="sidebar-foot">
-    <div class="status"><span class="pulse"></span>currently building</div>
+    <div class="status"><span class="pulse"></span><span data-site-field="statusText">currently building</span></div>
     <div class="social-row">
-      <a href="https://github.com/" target="_blank" rel="noopener">GH</a>
-      <a href="https://x.com/" target="_blank" rel="noopener">X</a>
-      <a href="https://linkedin.com/" target="_blank" rel="noopener">IN</a>
+      <a href="https://github.com/" target="_blank" rel="noopener" data-site-field="github" data-site-attr="href">GH</a>
+      <a href="https://x.com/" target="_blank" rel="noopener" data-site-field="twitter" data-site-attr="href">X</a>
+      <a href="https://linkedin.com/" target="_blank" rel="noopener" data-site-field="linkedin" data-site-attr="href">IN</a>
     </div>
   </div>
 </aside>
@@ -465,60 +466,63 @@
 
     <div class="timeline">
 
+      <!-- Umbrella Experience Item -->
       <div class="timeline-item reveal">
         <div class="timeline-date">
           Feb 2026 — Present
-          <span class="tl-type">Contract</span>
+          <span class="tl-type">Contract / Independent</span>
         </div>
         <div>
-          <div class="timeline-role">Full Stack Engineer</div>
-          <div class="timeline-company">Eruscent — EdTech Marketplace</div>
-          <p class="timeline-desc">Engineered a multi-tenant B2B SaaS platform from the ground up for institutional peer tutoring — University → Campus → Department hierarchy with strict per-department data isolation. Delivered a 3-department rollout approved on the basis of an early-warning analytics dashboard. Migrated legacy JWT auth to a Clerk/JWKS architecture, cutting backend auth overhead ~40% and eliminating ~1,400 lines of custom React forms. Remediated 18 OWASP vulnerabilities across rate limiting, CORS, and CSP.</p>
-          <div class="timeline-highlights">
-            <span class="timeline-highlight">70% beta adoption rate</span>
-            <span class="timeline-highlight">18 OWASP vulns patched</span>
-            <span class="timeline-highlight">~40% auth overhead cut</span>
-          </div>
-          <div class="tech-tags">
-            <span class="tag">Spring Boot</span>
-            <span class="tag">Java 21</span>
-            <span class="tag">Next.js</span>
-            <span class="tag">PostgreSQL</span>
-            <span class="tag">Clerk</span>
-            <span class="tag">Flyway</span>
+          <div class="timeline-role">Software Engineer</div>
+          <div class="timeline-company">Independent Contracting &amp; Products</div>
+          
+          <div class="nested-roles">
+            
+            <div class="nested-role-block">
+              <div class="nested-role-title">Eruscent <span class="nested-role-badge">Full Stack Engineer</span></div>
+              <p class="timeline-desc">Engineered a multi-tenant B2B SaaS platform from the ground up for institutional peer tutoring — University → Campus → Department hierarchy with strict per-department data isolation. Delivered a 3-department rollout approved on the basis of an early-warning analytics dashboard. Migrated legacy JWT auth to a Clerk/JWKS architecture, cutting backend auth overhead ~40% and eliminating ~1,400 lines of custom React forms. Remediated 18 OWASP vulnerabilities across rate limiting, CORS, and CSP.</p>
+              <div class="timeline-highlights">
+                <span class="timeline-highlight">70% beta adoption rate</span>
+                <span class="timeline-highlight">18 OWASP vulns patched</span>
+                <span class="timeline-highlight">~40% auth overhead cut</span>
+              </div>
+              <div class="tech-tags">
+                <span class="tag">Spring Boot</span>
+                <span class="tag">Java 21</span>
+                <span class="tag">Next.js</span>
+                <span class="tag">PostgreSQL</span>
+                <span class="tag">Clerk</span>
+                <span class="tag">Flyway</span>
+              </div>
+            </div>
+
+            <div class="nested-role-block">
+              <div class="nested-role-title">ResuMaxxing <span class="nested-role-badge">AI Product Engineer</span></div>
+              <p class="timeline-desc">Designed and shipped an AI career operating system end-to-end. Built the AI engine around strict anti-hallucination guardrails — JSON-schema enforcement, 1-to-1 bullet matching, domain isolation — to make GPT-4o reliable enough for user-facing resume tailoring. Implemented zero-downtime deployments via health-gated Alembic migrations and global billing via Lemon Squeezy HMAC-SHA256 webhooks. Ships as a web app and native iOS/Android via Capacitor from a single codebase.</p>
+              <div class="timeline-highlights">
+                <span class="timeline-highlight">&lt;10s AI generation</span>
+                <span class="timeline-highlight">Zero-downtime deploys</span>
+                <span class="timeline-highlight">iOS + Android + Web</span>
+              </div>
+              <div class="tech-tags">
+                <span class="tag">Next.js</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">OpenAI</span>
+                <span class="tag">Capacitor</span>
+                <span class="tag">Clerk</span>
+                <span class="tag">Lemon Squeezy</span>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
 
+      <!-- Standalone Experience Item -->
       <div class="timeline-item reveal">
         <div class="timeline-date">
-          2025 — Present
-          <span class="tl-type">Independent</span>
-        </div>
-        <div>
-          <div class="timeline-role">AI Product Engineer</div>
-          <div class="timeline-company">ResuMaxxing — AI SaaS</div>
-          <p class="timeline-desc">Designed and shipped an AI career operating system end-to-end. Built the AI engine around strict anti-hallucination guardrails — JSON-schema enforcement, 1-to-1 bullet matching, domain isolation — to make GPT-4o reliable enough for user-facing resume tailoring. Implemented zero-downtime deployments via health-gated Alembic migrations and global billing via Lemon Squeezy HMAC-SHA256 webhooks. Ships as a web app and native iOS/Android via Capacitor from a single codebase.</p>
-          <div class="timeline-highlights">
-            <span class="timeline-highlight">&lt;10s AI generation</span>
-            <span class="timeline-highlight">Zero-downtime deploys</span>
-            <span class="timeline-highlight">iOS + Android + Web</span>
-          </div>
-          <div class="tech-tags">
-            <span class="tag">Next.js</span>
-            <span class="tag">FastAPI</span>
-            <span class="tag">OpenAI</span>
-            <span class="tag">Capacitor</span>
-            <span class="tag">Clerk</span>
-            <span class="tag">Lemon Squeezy</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-item reveal">
-        <div class="timeline-date">
-          2025
-          <span class="tl-type">Freelance</span>
+          2026
+          <span class="tl-type">Part-time</span>
         </div>
         <div>
           <div class="timeline-role">Software Engineer</div>
@@ -578,11 +582,11 @@
   <section id="contact">
     <div class="inner">
       <div class="eyebrow reveal">Contact</div>
-      <h2 class="contact-big reveal">Building something worth building?<br>Let's talk — <a href="mailto:hello@kennethtorcuator.dev">hello@kennethtorcuator.dev</a></h2>
+      <h2 class="contact-big reveal">Building something worth building?<br>Let's talk — <a href="mailto:hello@kennethtorcuator.dev" data-site-field="email" data-site-attr="href">hello@kennethtorcuator.dev</a></h2>
       <div class="contact-links reveal">
-        <a href="mailto:hello@kennethtorcuator.dev">Email →</a>
-        <a href="https://github.com/" target="_blank" rel="noopener">GitHub →</a>
-        <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn →</a>
+        <a href="mailto:hello@kennethtorcuator.dev" data-site-field="email" data-site-attr="href">Email →</a>
+        <a href="https://github.com/" target="_blank" rel="noopener" data-site-field="github" data-site-attr="href">GitHub →</a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener" data-site-field="linkedin" data-site-attr="href">LinkedIn →</a>
         <a href="assets/resume.pdf" target="_blank">Resume →</a>
       </div>
       <footer>

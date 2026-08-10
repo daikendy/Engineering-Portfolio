@@ -476,6 +476,21 @@ footer{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono'
   font-size:13.5px; color:var(--muted); margin-bottom:14px;
   font-family:'IBM Plex Mono',monospace; font-size:12px;
 }
+.nested-roles{ display:flex; flex-direction:column; gap:28px; margin-top:20px; }
+.nested-role-block{
+  padding-left:18px; border-left:2px solid var(--hairline);
+  transition:border-color .2s ease;
+}
+.nested-role-block:hover{ border-left-color:var(--cobalt); }
+.nested-role-title{
+  font-family:'Fraunces',serif; font-weight:500; font-size:17px;
+  color:var(--ink); margin-bottom:4px; display:flex; align-items:center; gap:8px;
+}
+.nested-role-badge{
+  font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--cobalt);
+  background:var(--cobalt-wash); padding:2px 7px; border-radius:4px;
+  font-weight:400; text-transform:uppercase; letter-spacing:.05em;
+}
 .timeline-desc{
   font-size:14.5px; color:var(--ink-soft); line-height:1.72;
   max-width:520px; margin-bottom:14px;

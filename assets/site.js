@@ -1,5 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  // Auto-populate dynamic site data fields from assets/data.js
+  if (typeof SITE_DATA !== 'undefined') {
+    document.querySelectorAll('[data-site-field]').forEach(el => {
+      const field = el.getAttribute('data-site-field');
+      const attr = el.getAttribute('data-site-attr');
+      const value = SITE_DATA[field];
+      if (value !== undefined) {
+        if (attr) {
+          el.setAttribute(attr, attr === 'href' && field.includes('email') && !value.startsWith('mailto:') ? `mailto:${value}` : value);
+        } else {
+          el.textContent = value;
+        }
+      }
+    });
+  }
+
   // Custom cursor
   const dot = document.getElementById('dot');
   if (dot && window.matchMedia('(hover: hover)').matches) {
