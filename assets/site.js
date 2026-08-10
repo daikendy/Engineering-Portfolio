@@ -58,7 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
     heroHead.innerHTML = html.trim();
     if (window.gsap) {
       gsap.to('#heroHead .word span', {
-        y: '0%', duration: 1, ease: 'power3.out', stagger: 0.03, delay: 0.1
+        y: '0%', duration: 0.9, ease: 'power4.out', stagger: 0.03, delay: 0.1
+      });
+      gsap.to('.hero-sub, .hero-meta', {
+        opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power2.out', delay: 0.4
       });
     }
   }
@@ -84,6 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
       target.scrollIntoView({ behavior: 'smooth' });
     }
   }));
+
+  // Handle cross-page deep link jumps (e.g. returning from subpages like index.html#arch)
+  if (window.location.hash) {
+    const targetId = window.location.hash.substring(1);
+    const targetEl = document.getElementById(targetId);
+    if (targetEl) {
+      setTimeout(() => {
+        targetEl.scrollIntoView({ behavior: 'smooth' });
+        setActive(targetId);
+      }, 250);
+    }
+  }
 
   // Mobile menu toggle
   const menuBtn = document.getElementById('menuBtn');

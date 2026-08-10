@@ -599,28 +599,8 @@
 
 </main>
 
-<script>
-const heroText = "I build software that <em>disappears</em> into use.";
-const heroHead = document.getElementById('heroHead');
-heroText.split(' ').forEach(w => {
-  const wordWrap = document.createElement('span');
-  wordWrap.className = 'word';
-  if(w.includes('<em>')){
-    wordWrap.innerHTML = '<span>' + w.replace('<em>','').replace('</em>','') + '</span>';
-    wordWrap.querySelector('span').style.fontStyle = 'italic';
-    wordWrap.querySelector('span').style.fontWeight = '500';
-    wordWrap.querySelector('span').style.color = 'var(--cobalt-deep)';
-  } else {
-    wordWrap.innerHTML = '<span>' + w + '</span>';
-  }
-  heroHead.appendChild(wordWrap);
-  heroHead.appendChild(document.createTextNode(' '));
-});
+</main>
 
-gsap.timeline({ delay: 0.2 })
-  .to('.word span', { y: '0%', duration: 0.9, stagger: 0.045, ease: 'power4.out' })
-  .to('.hero-sub, .hero-meta', { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power2.out' }, '-=0.5');
-</script>
 <script src="assets/site.js"></script>
 </body>
 </html>
