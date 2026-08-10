@@ -34,11 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Scroll reveals (skip hero elements, animated separately on index)
+  // Scroll reveals (skip hero elements, topbar, and mobile menu)
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
     document.querySelectorAll('.reveal').forEach(el => {
-      if (el.closest('#home')) return;
+      if (el.closest('#home') || el.closest('#site-topbar') || el.closest('#site-mobile-menu') || el.id === 'mobileMenu') return;
       gsap.to(el, {
         opacity: 1, y: 0, duration: 0.8, ease: 'power2.out',
         scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' }
