@@ -299,7 +299,7 @@
     </div>
 
     <h2>Notes</h2>
-    <p>The multi-tenant hierarchy sounds simple on paper — university, campus, department, user — but enforcing it consistently across 28 REST API endpoints, 6 distinct role types, and a caching layer that aggregates across tenants without leaking data between them required treating the hierarchy as a first-class architectural primitive, not a filter condition bolted on at the end.</p>
+    <p>The multi-tenant hierarchy sounds simple on paper — university, campus, department, user — but enforcing it consistently across 28 REST API endpoints, 4 primary role types (Student, Tutor, Department Admin, Super Admin), and a caching layer that aggregates across tenants without leaking data between them required treating the hierarchy as a first-class architectural primitive, not a filter condition bolted on at the end.</p>
     <p>The hardest single decision was the optimistic locking guard. The tempting alternative is pessimistic locking — lock the row, wait, write. It's simpler to reason about. But under the enrollment load a popular tutor's lobby generates at the moment it goes live, pessimistic locking turns into a queue backed by a timeout, and users get errors that feel like bugs rather than honest "you got there second" responses. The 409 Conflict + structured error message is the honest design: it tells the client exactly what happened and why.</p>
 
   </div>
