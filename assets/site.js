@@ -1,5 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  // Render centralized topbar, mobile menu, and sidebar navigation
+  if (typeof renderSiteNavigation === 'function') {
+    const isSubpage = document.body.classList.contains('subpage');
+    renderSiteNavigation(isSubpage);
+  }
+
   // Auto-populate dynamic site data fields from assets/data.js
   if (typeof SITE_DATA !== 'undefined') {
     document.querySelectorAll('[data-site-field]').forEach(el => {
