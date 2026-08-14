@@ -14,7 +14,9 @@ const SITE_DATA = {
   statusText: "currently building",
   location: "Metro Manila, Philippines",
   education: "BS Computer Engineering, NU",
-  scholarship: "SM Foundation Scholar"
+  scholarship: "SM Foundation Scholar",
+  posthogApiKey: "phc_usqGSFGbgjMBnWHuEdLno4eUkgYuYcJJ7hQqUvMDeKP2",
+  posthogApiHost: "https://us.i.posthog.com"
 };
 
 if (typeof module !== 'undefined' && module.exports) {
