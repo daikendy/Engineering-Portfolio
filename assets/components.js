@@ -88,3 +88,15 @@ function renderSiteNavigation(isSubpage = false) {
     `;
   }
 }
+
+// Auto-execute navigation rendering as soon as script is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    const isSubpage = document.body && document.body.classList.contains('subpage');
+    renderSiteNavigation(isSubpage);
+  });
+} else {
+  const isSubpage = document.body && document.body.classList.contains('subpage');
+  renderSiteNavigation(isSubpage);
+}
+

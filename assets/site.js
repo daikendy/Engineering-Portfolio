@@ -178,7 +178,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 2. Morph Hero Content
       if (heroHead && typeof HARDWARE_DATA !== 'undefined') {
-        heroHead.innerHTML = isHardware ? HARDWARE_DATA.heroHead : SOFTWARE_DEFAULTS.heroHead;
+        const rawHead = isHardware ? HARDWARE_DATA.heroHead : SOFTWARE_DEFAULTS.heroHead;
+        heroHead.innerHTML = rawHead;
+        if (window.gsap && isHardware) {
+          gsap.fromTo('#heroHead .word span', { y: '110%' }, { y: '0%', duration: 0.7, ease: 'power4.out', stagger: 0.02 });
+        }
       }
       if (heroSub && typeof HARDWARE_DATA !== 'undefined') {
         heroSub.innerHTML = isHardware ? HARDWARE_DATA.heroSub : SOFTWARE_DEFAULTS.heroSub;
