@@ -21,7 +21,7 @@ function renderSiteNavigation(isSubpage = false) {
   const prefix = isSubpage ? (isHardwarePage ? '../hardware.html#' : '../index.html#') : '#';
   const resumeHref = isSubpage ? '../assets/resume.pdf' : 'assets/resume.pdf';
   const personaToggleHref = isHardwarePage ? (isSubpage ? '../index.html' : 'index.html') : (isSubpage ? '../hardware.html' : 'hardware.html');
-  const personaToggleText = isHardwarePage ? '[⚡ Switch to Software ➔]' : '[⚙️ Switch to Hardware ➔]';
+  const personaToggleText = isHardwarePage ? '[Switch to Software ➔]' : '[Switch to Hardware ➔]';
   const personaRole = isHardwarePage ? 'Hardware & Embedded Engineer' : 'Full-Stack Software Engineer';
 
   // 1. Render Topbar
@@ -43,7 +43,7 @@ function renderSiteNavigation(isSubpage = false) {
     mobileMenuContainer.className = 'mobile-menu';
     mobileMenuContainer.id = 'mobileMenu';
     let mobileLinksHtml = NAV_ITEMS.map(item => `<a href="${prefix}${item.id}"><span class="mm-idx">${item.idx}</span>${item.label}</a>`).join('\n  ');
-    mobileLinksHtml += `\n  <a class="persona-toggle-link" href="${personaToggleHref}"><span class="mm-idx">⚡</span>${personaToggleText}</a>`;
+    mobileLinksHtml += `\n  <a class="persona-toggle-link" href="${personaToggleHref}">${personaToggleText}</a>`;
     mobileLinksHtml += `\n  <a href="${resumeHref}" target="_blank" data-site-field="${isSubpage ? 'subpageResumeUrl' : 'resumeUrl'}" data-site-attr="href"><span class="mm-idx">↗</span>Resume</a>`;
     mobileLinksHtml += `\n  <div class="mm-foot"><span>© 2026 KT</span><span>v3.2.0</span></div>`;
     mobileMenuContainer.innerHTML = mobileLinksHtml;

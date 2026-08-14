@@ -102,26 +102,24 @@
       <h2 class="sec-title reveal">Field notes on digital logic synthesis, embedded firmware, and hardware protocols.</h2>
     </div>
 
-    <div class="note reveal">
-      <div class="note-link">
-        <div class="note-left">
-          <h3>Understanding Verilog Non-Blocking Assignments &amp; Race Conditions</h3>
-          <div class="excerpt">Why non-blocking (<=) assignments prevent simulation race conditions in sequential logic, and how synthesized flip-flops differ from combinational blocking (=) logic.</div>
-        </div>
-        <div class="note-meta">
-          <span>Aug 2026</span>
+    <div style="max-width:680px;">
+      <div class="note reveal">
+        <div class="note-link">
+          <div class="note-left">
+            <h3>Understanding Verilog Non-Blocking Assignments &amp; Race Conditions</h3>
+            <div class="excerpt">Why non-blocking (&lt;=) assignments prevent simulation race conditions in sequential logic, and how synthesized flip-flops differ from combinational blocking (=) logic.</div>
+          </div>
+          <div class="note-meta">Aug 2026<br>5 min</div>
         </div>
       </div>
-    </div>
 
-    <div class="note reveal">
-      <div class="note-link">
-        <div class="note-left">
-          <h3>Interrupt Service Routines &amp; DMA Memory Offloading on STM32</h3>
-          <div class="excerpt">Reducing CPU cycle overhead by leveraging Direct Memory Access (DMA) for SPI and UART hardware buffers in low-latency embedded systems.</div>
-        </div>
-        <div class="note-meta">
-          <span>Jul 2026</span>
+      <div class="note reveal">
+        <div class="note-link">
+          <div class="note-left">
+            <h3>Interrupt Service Routines &amp; DMA Memory Offloading on STM32</h3>
+            <div class="excerpt">Reducing CPU cycle overhead by leveraging Direct Memory Access (DMA) for SPI and UART hardware buffers in low-latency embedded systems.</div>
+          </div>
+          <div class="note-meta">Jul 2026<br>4 min</div>
         </div>
       </div>
     </div>
@@ -132,99 +130,100 @@
       <div class="eyebrow reveal">Changelog</div>
       <h2 class="sec-title reveal">Hardware project engineering log.</h2>
     </div>
-
-    <div class="log-entry reveal">
-      <div class="log-date">2026.08.14</div>
-      <div class="log-row">
-        <span class="log-badge badge-shipped">Shipped</span>
-        <div class="log-body">
-          <p><strong>Hardware Persona Integration:</strong> Released dedicated Hardware &amp; Embedded Systems engineering view featuring Verilog HDL, STM32 firmware specs, and circuit design tooling.</p>
+    <div style="max-width:700px;">
+      <div class="log-entry reveal">
+        <div class="log-date">2026.08.14</div>
+        <div class="log-row">
+          <span class="log-badge badge-shipped">Shipped</span>
+          <div class="log-body">
+            <p><strong>Hardware Persona Integration:</strong> Released dedicated Hardware &amp; Embedded Systems engineering view featuring Verilog HDL, STM32 firmware specs, and circuit design tooling.</p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="log-entry reveal">
-      <div class="log-date">2026.07.28</div>
-      <div class="log-row">
-        <span class="log-badge badge-fixed">Fixed</span>
-        <div class="log-body">
-          <p><strong>STM32 DMA Transfer Stability:</strong> Resolved I2C bus lockup issue by implementing automated peripheral bus reset on bus error interrupts.</p>
+      <div class="log-entry reveal">
+        <div class="log-date">2026.07.28</div>
+        <div class="log-row">
+          <span class="log-badge badge-fixed">Fixed</span>
+          <div class="log-body">
+            <p><strong>STM32 DMA Transfer Stability:</strong> Resolved I2C bus lockup issue by implementing automated peripheral bus reset on bus error interrupts.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <section id="stack">
-    <div class="inner" style="max-width:720px;">
+    <div class="inner" style="max-width:640px;">
       <div class="eyebrow reveal">Hardware Stack</div>
       <h2 class="sec-title reveal">Hardware description languages, microcontrollers, protocols, and EDA tools I engineer with.</h2>
+    </div>
 
-      <div class="stack-categories reveal">
-        <div class="stack-category">
-          <div class="stack-category-label">Languages &amp; HDL</div>
-          <div class="stack-rows">
-            <div class="stack-row">
-              <div class="stack-name">C / C++</div>
-              <div class="stack-why">The foundational language for microcontroller bare-metal drivers, memory management, and deterministic embedded execution.</div>
-            </div>
-            <div class="stack-row">
-              <div class="stack-name">Verilog / SystemVerilog</div>
-              <div class="stack-why">Hardware description language for digital logic design, finite state machines, and FPGA logic synthesis.</div>
-            </div>
-            <div class="stack-row">
-              <div class="stack-name">Python</div>
-              <div class="stack-why">Used for automated test benches, serial protocol data logging, and hardware simulation scripting.</div>
-            </div>
+    <div class="stack-categories reveal">
+      <div class="stack-category">
+        <div class="stack-category-label">Languages &amp; HDL</div>
+        <div class="stack-rows">
+          <div class="stack-row">
+            <div class="stack-name">C / C++</div>
+            <div class="stack-why">The foundational language for microcontroller bare-metal drivers, memory management, and deterministic embedded execution.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Verilog / SystemVerilog</div>
+            <div class="stack-why">Hardware description language for digital logic design, finite state machines, and FPGA logic synthesis.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Python</div>
+            <div class="stack-why">Used for automated test benches, serial protocol data logging, and hardware simulation scripting.</div>
           </div>
         </div>
+      </div>
 
-        <div class="stack-category">
-          <div class="stack-category-label">Microcontrollers &amp; RTOS</div>
-          <div class="stack-rows">
-            <div class="stack-row">
-              <div class="stack-name">STM32 (ARM Cortex-M)</div>
-              <div class="stack-why">Industry-standard 32-bit MCU platform for real-time control, DMA transfers, and timer interrupt systems.</div>
-            </div>
-            <div class="stack-row">
-              <div class="stack-name">ESP32 / AVR</div>
-              <div class="stack-why">Dual-core microcontrollers for IoT edge telemetry, sensor processing, and embedded server nodes.</div>
-            </div>
-            <div class="stack-row">
-              <div class="stack-name">FreeRTOS</div>
-              <div class="stack-why">Preemptive real-time operating system for multi-threaded task scheduling, semaphores, and inter-task queues.</div>
-            </div>
+      <div class="stack-category">
+        <div class="stack-category-label">Microcontrollers &amp; RTOS</div>
+        <div class="stack-rows">
+          <div class="stack-row">
+            <div class="stack-name">STM32 (ARM Cortex-M)</div>
+            <div class="stack-why">Industry-standard 32-bit MCU platform for real-time control, DMA transfers, and timer interrupt systems.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">ESP32 / AVR</div>
+            <div class="stack-why">Dual-core microcontrollers for IoT edge telemetry, sensor processing, and embedded server nodes.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">FreeRTOS</div>
+            <div class="stack-why">Preemptive real-time operating system for multi-threaded task scheduling, semaphores, and inter-task queues.</div>
           </div>
         </div>
+      </div>
 
-        <div class="stack-category">
-          <div class="stack-category-label">Hardware Protocols &amp; Bus Systems</div>
-          <div class="stack-rows">
-            <div class="stack-row">
-              <div class="stack-name">UART / SPI / I2C</div>
-              <div class="stack-why">Synchronous and asynchronous bus protocols for sensor communication, display controllers, and peripheral expansion.</div>
-            </div>
-            <div class="stack-row">
-              <div class="stack-name">PWM &amp; ADC / DAC</div>
-              <div class="stack-why">Analog-to-digital conversion, signal processing, and pulse-width modulation for motor speed &amp; power control.</div>
-            </div>
+      <div class="stack-category">
+        <div class="stack-category-label">Hardware Protocols &amp; Bus Systems</div>
+        <div class="stack-rows">
+          <div class="stack-row">
+            <div class="stack-name">UART / SPI / I2C</div>
+            <div class="stack-why">Synchronous and asynchronous bus protocols for sensor communication, display controllers, and peripheral expansion.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">PWM &amp; ADC / DAC</div>
+            <div class="stack-why">Analog-to-digital conversion, signal processing, and pulse-width modulation for motor speed &amp; power control.</div>
           </div>
         </div>
+      </div>
 
-        <div class="stack-category">
-          <div class="stack-category-label">EDA &amp; Engineering Tooling</div>
-          <div class="stack-rows">
-            <div class="stack-row">
-              <div class="stack-name">iVerilog &amp; GTKWave</div>
-              <div class="stack-why">Open-source Verilog simulation suite for waveform analysis and timing verification before hardware flash.</div>
-            </div>
-            <div class="stack-row">
-              <div class="stack-name">AutoCAD 2026</div>
-              <div class="stack-why">Computer-aided design for 2D engineering drawings, mechanical enclosures, and hardware layout schematics.</div>
-            </div>
-            <div class="stack-row">
-              <div class="stack-name">Logic Analyzers &amp; Scope</div>
-              <div class="stack-why">Physical waveform verification, bus decoding, and signal integrity debugging at the hardware level.</div>
-            </div>
+      <div class="stack-category">
+        <div class="stack-category-label">EDA &amp; Engineering Tooling</div>
+        <div class="stack-rows">
+          <div class="stack-row">
+            <div class="stack-name">iVerilog &amp; GTKWave</div>
+            <div class="stack-why">Open-source Verilog simulation suite for waveform analysis and timing verification before hardware flash.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">AutoCAD 2026</div>
+            <div class="stack-why">Computer-aided design for 2D engineering drawings, mechanical enclosures, and hardware layout schematics.</div>
+          </div>
+          <div class="stack-row">
+            <div class="stack-name">Logic Analyzers &amp; Scope</div>
+            <div class="stack-why">Physical waveform verification, bus decoding, and signal integrity debugging at the hardware level.</div>
           </div>
         </div>
       </div>
@@ -232,32 +231,31 @@
   </section>
 
   <section id="arch">
-    <div class="inner" style="max-width:760px;">
+    <div class="inner" style="max-width:640px;">
       <div class="eyebrow reveal">Hardware Architecture</div>
       <h2 class="sec-title reveal">How I approach hardware-software co-design, memory constraints, and bus latency.</h2>
+    </div>
+    <p class="arch-intro reveal">Building embedded systems requires thinking in cycles, bytes, and voltage states. Every line of C code maps directly to MCU registers, and every Verilog module translates into physical logic gates.</p>
 
-      <p class="arch-intro reveal">Building embedded systems requires thinking in cycles, bytes, and voltage states. Every line of C code maps directly to MCU registers, and every Verilog module translates into physical logic gates.</p>
-
-      <div class="arch-panels reveal">
-        <div class="arch-panel">
-          <div class="arch-panel-head">
-            <div class="arch-panel-title"><span class="arch-dot"></span>Hardware-Software Co-Design</div>
-            <div class="arch-panel-badge">Firmware Layer</div>
-          </div>
-          <div class="arch-panel-body">
-            <div class="arch-tier-list">
-              <div class="arch-tier">
-                <div class="arch-tier-name">Silicon / Logic Gates</div>
-                <div class="arch-tier-desc">Verilog HDL logic modules, flip-flops, multiplexers, and state machines synthesized for hardware execution.</div>
-              </div>
-              <div class="arch-tier">
-                <div class="arch-tier-name">Bare-Metal Drivers</div>
-                <div class="arch-tier-desc">Direct register manipulation in C/C++ (RCC, GPIO, TIM, USART) bypassing HAL abstraction overhead when latency is critical.</div>
-              </div>
-              <div class="arch-tier">
-                <div class="arch-tier-name">FreeRTOS Scheduler</div>
-                <div class="arch-tier-desc">Preemptive task scheduling with mutex locks, queues, and software timers ensuring real-time deadline guarantees.</div>
-              </div>
+    <div class="arch-panels reveal">
+      <div class="arch-panel">
+        <div class="arch-panel-head">
+          <div class="arch-panel-title"><span class="arch-dot"></span>Hardware-Software Co-Design</div>
+          <span class="arch-panel-badge">Firmware Layer</span>
+        </div>
+        <div class="arch-panel-body">
+          <div class="arch-tier-list">
+            <div class="arch-tier">
+              <div class="arch-tier-name">Silicon / Logic Gates</div>
+              <div class="arch-tier-desc">Verilog HDL logic modules, flip-flops, multiplexers, and state machines synthesized for hardware execution.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">Bare-Metal Drivers</div>
+              <div class="arch-tier-desc">Direct register manipulation in C/C++ (RCC, GPIO, TIM, USART) bypassing HAL abstraction overhead when latency is critical.</div>
+            </div>
+            <div class="arch-tier">
+              <div class="arch-tier-name">FreeRTOS Scheduler</div>
+              <div class="arch-tier-desc">Preemptive task scheduling with mutex locks, queues, and software timers ensuring real-time deadline guarantees.</div>
             </div>
           </div>
         </div>
@@ -266,46 +264,46 @@
   </section>
 
   <section id="principles">
-    <div class="inner" style="max-width:720px;">
+    <div class="inner" style="max-width:640px;">
       <div class="eyebrow reveal">Hardware Principles</div>
       <h2 class="sec-title reveal">Guiding principles for embedded systems and hardware engineering.</h2>
+    </div>
 
-      <div class="principles-list reveal">
-        <div class="principle-item">
-          <div class="principle-num">01</div>
-          <div class="principle-body">
-            <div class="principle-stmt">Silicon logic doesn't lie — verify with waveforms early.</div>
-            <div class="principle-expand">Before flashing to hardware, simulate Verilog logic with iVerilog and inspect timing diagrams in GTKWave to catch race conditions and setup/hold violations.</div>
-          </div>
+    <div class="principles-list">
+      <div class="principle-item reveal">
+        <div class="principle-num">01</div>
+        <div class="principle-body">
+          <div class="principle-stmt">Silicon logic doesn't lie — verify with waveforms early.</div>
+          <div class="principle-expand">Before flashing to hardware, simulate Verilog logic with iVerilog and inspect timing diagrams in GTKWave to catch race conditions and setup/hold violations.</div>
         </div>
+      </div>
 
-        <div class="principle-item">
-          <div class="principle-num">02</div>
-          <div class="principle-body">
-            <div class="principle-stmt">Respect hardware memory constraints &amp; interrupt budgets.</div>
-            <div class="principle-expand">Keep Interrupt Service Routines (ISRs) short and deterministic. Offload data transfers to DMA buffers to leave CPU cycles free for application logic.</div>
-          </div>
+      <div class="principle-item reveal">
+        <div class="principle-num">02</div>
+        <div class="principle-body">
+          <div class="principle-stmt">Respect hardware memory constraints &amp; interrupt budgets.</div>
+          <div class="principle-expand">Keep Interrupt Service Routines (ISRs) short and deterministic. Offload data transfers to DMA buffers to leave CPU cycles free for application logic.</div>
         </div>
       </div>
     </div>
   </section>
 
   <section id="exp">
-    <div class="inner" style="max-width:760px;">
-      <div class="eyebrow reveal">Experience &amp; Education</div>
+    <div class="inner" style="max-width:640px;">
+      <div class="eyebrow reveal">Experience</div>
       <h2 class="sec-title reveal">Academic foundation in Computer Engineering &amp; embedded systems.</h2>
+    </div>
 
-      <div class="timeline reveal">
-        <div class="edu-strip">
-          <div class="edu-label">Education</div>
-          <div>
-            <div class="edu-degree">BS in Computer Engineering</div>
-            <div class="edu-school">National University · SM Foundation Scholar</div>
-            <div class="edu-meta">
-              <span class="edu-badge gold">SM Scholar</span>
-              <span class="edu-badge">Computer Engineering</span>
-              <span class="edu-badge">Embedded Systems &amp; Hardware</span>
-            </div>
+    <div class="timeline">
+      <div class="edu-strip reveal">
+        <div class="edu-label">Education</div>
+        <div>
+          <div class="edu-degree">BS in Computer Engineering</div>
+          <div class="edu-school">National University · SM Foundation Scholar</div>
+          <div class="edu-meta">
+            <span class="edu-badge gold">SM Scholar</span>
+            <span class="edu-badge">Computer Engineering</span>
+            <span class="edu-badge">Embedded Systems &amp; Hardware</span>
           </div>
         </div>
       </div>
@@ -313,17 +311,15 @@
   </section>
 
   <section id="about">
-    <div class="inner" style="max-width:760px;">
+    <div class="inner" style="max-width:none;">
       <div class="eyebrow reveal">About</div>
-      <h2 class="sec-title reveal">Computer Engineering scholar bridging physical hardware with low-level software.</h2>
-
-      <div class="about-grid reveal">
-        <div class="about-text">
+      <div class="about-grid">
+        <div class="about-text reveal">
           <p>I study Computer Engineering at National University as an SM Foundation Scholar, focusing on embedded C/C++, Verilog HDL logic synthesis, microcontrollers (STM32, ESP32), and CAD schematic design.</p>
           <p>Whether it's optimizing register-level peripheral drivers, simulating state machines in iVerilog, or designing 2D AutoCAD schematics, I build systems where hardware and software meet seamlessly.</p>
         </div>
 
-        <div class="now-box">
+        <div class="now-box reveal">
           <h4>Engineering Specs</h4>
           <div class="now-item">
             <span class="now-label">Degree</span>
@@ -347,21 +343,21 @@
   </section>
 
   <section id="contact">
-    <div class="inner" style="max-width:760px;">
+    <div class="inner">
       <div class="eyebrow reveal">Contact</div>
-      <div class="contact-big reveal">
-        Interested in embedded systems or hardware engineering? Drop me a line at <a href="mailto:torcuatorkenneth6@gmail.com" data-site-field="email" data-site-attr="href">torcuatorkenneth6@gmail.com</a>.
-      </div>
+      <h2 class="contact-big reveal">Interested in embedded systems or hardware engineering?<br>Let's talk — <a href="mailto:torcuatorkenneth6@gmail.com" data-site-field="email" data-site-attr="href">torcuatorkenneth6@gmail.com</a></h2>
 
       <div class="contact-links reveal">
-        <a href="https://github.com/daikendy" target="_blank" rel="noopener" data-site-field="github" data-site-attr="href">GitHub ↗</a>
-        <a href="https://linkedin.com/in/kenneth-torcuator" target="_blank" rel="noopener" data-site-field="linkedin" data-site-attr="href">LinkedIn ↗</a>
-        <a href="https://x.com/" target="_blank" rel="noopener" data-site-field="twitter" data-site-attr="href">X ↗</a>
+        <a href="mailto:torcuatorkenneth6@gmail.com" data-site-field="email" data-site-attr="href">Email →</a>
+        <a href="https://github.com/daikendy" target="_blank" rel="noopener" data-site-field="github" data-site-attr="href">GitHub →</a>
+        <a href="https://linkedin.com/in/kenneth-torcuator" target="_blank" rel="noopener" data-site-field="linkedin" data-site-attr="href">LinkedIn →</a>
+        <a href="https://x.com/hawkmoth110" target="_blank" rel="noopener" data-site-field="twitter" data-site-attr="href">X →</a>
+        <a href="assets/resume.pdf" target="_blank">Resume →</a>
       </div>
 
       <footer>
         <span>© 2026 Kenneth Torcuator · Hardware &amp; Embedded Engineering View</span>
-        <span>Metro Manila, PH</span>
+        <span class="mono">privacy-friendly analytics (no cookies or personal data collected)</span>
       </footer>
     </div>
   </section>
