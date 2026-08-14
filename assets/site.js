@@ -147,4 +147,66 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(err => console.warn('PWA SW registration skipped:', err));
     });
   }
+
+  // PostHog Telemetry & Web Analytics Integration
+  (function initPostHog() {
+    const apiKey = (typeof SITE_DATA !== 'undefined' && SITE_DATA.posthogApiKey) ? SITE_DATA.posthogApiKey : '';
+    const apiHost = (typeof SITE_DATA !== 'undefined' && SITE_DATA.posthogApiHost) ? SITE_DATA.posthogApiHost : 'https://us.i.posthog.com';
+
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}var w=e;for(void 0!==a?w=e[a]=[]:a="posthog",w.people=w.people||[],w.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},w.people.toString=function(){return w.toString(1)+".people"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identifyGroup setGroupProperties removeGroupProperty setGroupPropertiesForFlags resetGroupPropertiesForFlags setPersonPropertiesForFlags resetPersonPropertiesForFlags getGroupProperties getGroupProperty getGroupPropertiesForFlags getGroupPropertyForFlags clearGroupPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetPersonPropertiesForFlags getGroupProperties getGroupProperty getGroupPropertiesForFlags getGroupPropertyForFlags clearGroupPropertiesForFlags".split(" "),n=0;n<o.length;n++)g(w,o[n]);e._i.push([i,s,a])},e.__SV=1.0,o=t.createElement("script"),o.type="text/javascript",o.async=!0,o.src=s.api_host+"/static/array.js",(p=t.getElementsByTagName("script")[0]).parentNode.insertBefore(o,p))}(document,window.posthog||[]);
+
+    if (window.posthog && apiKey && !apiKey.includes('YOUR_POSTHOG_API_KEY')) {
+      window.posthog.init(apiKey, {
+        api_host: apiHost,
+        person_profiles: 'identified_only',
+        capture_pageview: true,
+        capture_pageleave: true,
+        autocapture: true
+      });
+      console.log('PostHog Analytics Initialized.');
+    }
+  })();
+
+  // Outbound & High-Value Telemetry Tracking Helpers
+  document.addEventListener('click', (e) => {
+    if (!window.posthog || typeof window.posthog.capture !== 'function') return;
+
+    const link = e.target.closest('a');
+    if (!link) return;
+
+    const href = link.getAttribute('href') || '';
+    const text = (link.textContent || '').trim();
+
+    // 1. Resume Download Tracking
+    if (href.includes('resume.pdf')) {
+      window.posthog.capture('resume_download_click', {
+        page: window.location.pathname,
+        link_text: text,
+        url: href
+      });
+    }
+    // 2. Outbound Release & Social Links
+    else if (href.startsWith('http://') || href.startsWith('https://')) {
+      if (href.includes('resumaxxing') || href.includes('eruscent')) {
+        window.posthog.capture('outbound_release_click', {
+          page: window.location.pathname,
+          target_url: href,
+          link_text: text
+        });
+      } else if (href.includes('github.com') || href.includes('linkedin.com') || href.includes('x.com') || href.includes('twitter.com')) {
+        window.posthog.capture('social_profile_click', {
+          platform: href.includes('github') ? 'github' : href.includes('linkedin') ? 'linkedin' : 'x_twitter',
+          target_url: href
+        });
+      }
+    }
+    // 3. Email Contact Click
+    else if (href.startsWith('mailto:')) {
+      window.posthog.capture('contact_email_click', {
+        email: href.replace('mailto:', ''),
+        page: window.location.pathname
+      });
+    }
+  });
 });
+
