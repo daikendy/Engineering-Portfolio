@@ -25,7 +25,13 @@ function renderSiteNavigation(isSubpage = false) {
   if (topbarContainer) {
     topbarContainer.className = 'topbar';
     topbarContainer.innerHTML = `
-      <div style="font-family:'Fraunces',serif; font-size:16px; font-weight:500;">Kenneth Torcuator</div>
+      <div class="topbar-left">
+        <div style="font-family:'Fraunces',serif; font-size:16px; font-weight:500;">Kenneth Torcuator</div>
+        <button class="mode-toggle-btn" id="topbarModeBtn" aria-label="Toggle Software / Hardware Mode" title="Click to toggle Software / Hardware persona">
+          <span class="mode-indicator-dot"></span>
+          <span class="mode-label-text">Software Mode</span>
+        </button>
+      </div>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
     `;
   }
@@ -57,10 +63,15 @@ function renderSiteNavigation(isSubpage = false) {
 
     sidebarContainer.innerHTML = `
       <div>
-        <div class="brand">
-          <div class="mark">KT</div>
+        <div class="brand" id="brandPersonaToggle" role="button" tabindex="0" title="Click logo or title to switch between Software & Hardware Engineering personas">
+          <div class="mark" id="brandMark">KT</div>
           <div class="brand-name">Kenneth Torcuator</div>
-          <div class="brand-role">Full-Stack Software Engineer</div>
+          <div class="brand-role" id="brandRole">Full-Stack Software Engineer</div>
+          <div class="persona-pill" id="personaPill">
+            <span class="persona-icon">⚡</span>
+            <span class="persona-text">Software Mode</span>
+            <span class="persona-hint">(switch)</span>
+          </div>
         </div>
         <nav id="navlist">
           ${navLinksHtml}

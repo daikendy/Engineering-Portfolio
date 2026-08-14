@@ -136,7 +136,117 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileMenu.classList.remove('open');
       }
     });
-  }
+  // Dual-Persona Switcher (Software ↔ Hardware Engineering)
+  (function initPersonaSwitcher() {
+    const brandToggle = document.getElementById('brandPersonaToggle');
+    const topbarBtn = document.getElementById('topbarModeBtn');
+    const brandRole = document.getElementById('brandRole');
+    const personaPill = document.getElementById('personaPill');
+    const topbarLabel = topbarBtn ? topbarBtn.querySelector('.mode-label-text') : null;
+
+    const heroHead = document.getElementById('heroHead');
+    const heroSub = document.getElementById('heroSub');
+    const heroMetaContainer = document.querySelector('.hero-meta');
+    const tickerTrack = document.querySelector('.stack-track');
+    const stackCategoriesContainer = document.querySelector('.stack-categories');
+
+    // Store original software persona defaults before any morphing
+    const SOFTWARE_DEFAULTS = {
+      role: (typeof SITE_DATA !== 'undefined' && SITE_DATA.role) ? SITE_DATA.role : "Full-Stack Software Engineer",
+      heroHead: heroHead ? heroHead.innerHTML : "",
+      heroSub: heroSub ? heroSub.innerHTML : "",
+      heroMeta: heroMetaContainer ? heroMetaContainer.innerHTML : "",
+      ticker: tickerTrack ? tickerTrack.innerHTML : "",
+      stackCategories: stackCategoriesContainer ? stackCategoriesContainer.innerHTML : ""
+    };
+
+    function applyPersonaMode(mode, triggerEvent = false) {
+      document.body.setAttribute('data-mode', mode);
+      localStorage.setItem('portfolio_mode', mode);
+
+      const isHardware = (mode === 'hardware');
+
+      // 1. Update Sidebar & Topbar Badges
+      if (brandRole) brandRole.textContent = isHardware ? "Hardware & Embedded Engineer" : SOFTWARE_DEFAULTS.role;
+      if (personaPill) {
+        personaPill.querySelector('.persona-icon').textContent = isHardware ? "⚙️" : "⚡";
+        personaPill.querySelector('.persona-text').textContent = isHardware ? "Hardware Mode" : "Software Mode";
+      }
+      if (topbarLabel) {
+        topbarLabel.textContent = isHardware ? "Hardware Mode" : "Software Mode";
+      }
+
+      // 2. Morph Hero Content
+      if (heroHead && typeof HARDWARE_DATA !== 'undefined') {
+        heroHead.innerHTML = isHardware ? HARDWARE_DATA.heroHead : SOFTWARE_DEFAULTS.heroHead;
+      }
+      if (heroSub && typeof HARDWARE_DATA !== 'undefined') {
+        heroSub.innerHTML = isHardware ? HARDWARE_DATA.heroSub : SOFTWARE_DEFAULTS.heroSub;
+      }
+      if (heroMetaContainer && typeof HARDWARE_DATA !== 'undefined' && HARDWARE_DATA.heroMeta) {
+        if (isHardware) {
+          heroMetaContainer.innerHTML = HARDWARE_DATA.heroMeta.map(m => `<div><strong>${m.val}</strong>${m.desc}</div>`).join('');
+        } else {
+          heroMetaContainer.innerHTML = SOFTWARE_DEFAULTS.heroMeta;
+        }
+      }
+
+      // 3. Morph Stack Ticker
+      if (tickerTrack && typeof HARDWARE_DATA !== 'undefined' && HARDWARE_DATA.ticker) {
+        if (isHardware) {
+          tickerTrack.innerHTML = HARDWARE_DATA.ticker.map(t => `<span>${t}</span>`).join('');
+        } else {
+          tickerTrack.innerHTML = SOFTWARE_DEFAULTS.ticker;
+        }
+      }
+
+      // 4. Morph Stack Categories section
+      if (stackCategoriesContainer && typeof HARDWARE_DATA !== 'undefined' && HARDWARE_DATA.stackCategories) {
+        if (isHardware) {
+          stackCategoriesContainer.innerHTML = HARDWARE_DATA.stackCategories.map(cat => `
+            <div class="stack-category">
+              <div class="stack-category-label">${cat.label}</div>
+              <div class="stack-rows">
+                ${cat.rows.map(r => `
+                  <div class="stack-row">
+                    <div class="stack-name">${r.name}</div>
+                    <div class="stack-why">${r.why}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('');
+        } else {
+          stackCategoriesContainer.innerHTML = SOFTWARE_DEFAULTS.stackCategories;
+        }
+      }
+
+      // 5. Fire PostHog Telemetry Event if triggered by user interaction
+      if (triggerEvent && window.posthog) {
+        window.posthog.capture('persona_switched', { mode: mode });
+      }
+    }
+
+    // Attach click triggers
+    function toggleMode() {
+      const currentMode = document.body.getAttribute('data-mode') === 'hardware' ? 'software' : 'hardware';
+      applyPersonaMode(currentMode, true);
+    }
+
+    if (brandToggle) {
+      brandToggle.addEventListener('click', toggleMode);
+      brandToggle.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMode(); } });
+    }
+    if (topbarBtn) {
+      topbarBtn.addEventListener('click', toggleMode);
+    }
+
+    // Load initial preference from localStorage (defaults to software)
+    const savedMode = localStorage.getItem('portfolio_mode') || 'software';
+    if (savedMode === 'hardware') {
+      applyPersonaMode('hardware', false);
+    }
+  })();
 
   // Register PWA Service Worker for offline support and app installation
   if ('serviceWorker' in navigator) {
