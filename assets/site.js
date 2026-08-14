@@ -210,6 +210,14 @@ document.addEventListener('DOMContentLoaded', () => {
         page: window.location.pathname
       });
     }
+    // 4. Persona Switcher Link Click
+    else if (link.classList.contains('persona-toggle-link')) {
+      const isToHardware = href.includes('hardware');
+      window.posthog.capture('persona_switched', {
+        mode: isToHardware ? 'hardware' : 'software',
+        page: window.location.pathname
+      });
+    }
   });
 });
 

@@ -17,15 +17,22 @@ const NAV_ITEMS = [
 ];
 
 function renderSiteNavigation(isSubpage = false) {
-  const prefix = isSubpage ? '../index.html#' : '#';
+  const isHardwarePage = (document.body && document.body.classList.contains('hardware-page')) || window.location.pathname.includes('hardware.html');
+  const prefix = isSubpage ? (isHardwarePage ? '../hardware.html#' : '../index.html#') : '#';
   const resumeHref = isSubpage ? '../assets/resume.pdf' : 'assets/resume.pdf';
+  const personaToggleHref = isHardwarePage ? (isSubpage ? '../index.html' : 'index.html') : (isSubpage ? '../hardware.html' : 'hardware.html');
+  const personaToggleText = isHardwarePage ? '[Switch to Software ➔]' : '[Switch to Hardware ➔]';
+  const personaRole = isHardwarePage ? 'Hardware & Embedded Engineer' : 'Full-Stack Software Engineer';
 
   // 1. Render Topbar
   const topbarContainer = document.getElementById('site-topbar');
   if (topbarContainer) {
     topbarContainer.className = 'topbar';
     topbarContainer.innerHTML = `
-      <div style="font-family:'Fraunces',serif; font-size:16px; font-weight:500;">Kenneth Torcuator</div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="font-family:'Fraunces',serif; font-size:16px; font-weight:500;">Kenneth Torcuator</div>
+        <a class="persona-toggle-link" href="${personaToggleHref}" style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--cobalt); text-decoration:none;">${isHardwarePage ? 'Software Mode' : 'Hardware Mode'}</a>
+      </div>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
     `;
   }
@@ -36,6 +43,7 @@ function renderSiteNavigation(isSubpage = false) {
     mobileMenuContainer.className = 'mobile-menu';
     mobileMenuContainer.id = 'mobileMenu';
     let mobileLinksHtml = NAV_ITEMS.map(item => `<a href="${prefix}${item.id}"><span class="mm-idx">${item.idx}</span>${item.label}</a>`).join('\n  ');
+    mobileLinksHtml += `\n  <a class="persona-toggle-link" href="${personaToggleHref}">${personaToggleText}</a>`;
     mobileLinksHtml += `\n  <a href="${resumeHref}" target="_blank" data-site-field="${isSubpage ? 'subpageResumeUrl' : 'resumeUrl'}" data-site-attr="href"><span class="mm-idx">↗</span>Resume</a>`;
     mobileLinksHtml += `\n  <div class="mm-foot"><span>© 2026 KT</span><span>v3.2.0</span></div>`;
     mobileMenuContainer.innerHTML = mobileLinksHtml;
@@ -60,7 +68,8 @@ function renderSiteNavigation(isSubpage = false) {
         <div class="brand">
           <div class="mark">KT</div>
           <div class="brand-name">Kenneth Torcuator</div>
-          <div class="brand-role">Full-Stack Software Engineer</div>
+          <div class="brand-role">${personaRole}</div>
+          <a class="persona-toggle-link" href="${personaToggleHref}" style="display:inline-block; margin-top:6px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--cobalt); text-decoration:none;" title="Switch engineering persona mode">${personaToggleText}</a>
         </div>
         <nav id="navlist">
           ${navLinksHtml}

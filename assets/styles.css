@@ -11,6 +11,18 @@
   --sidebar-w:220px;
   --maxw:760px;
 }
+
+/* Hardware Mode Color Palette Accent (Circuit Amber / Copper) */
+body.hardware-page, body[data-mode="hardware"] {
+  --cobalt: #D97706;
+  --cobalt-deep: #92400E;
+  --cobalt-wash: #FEF3C7;
+}
+
+body {
+  transition: color 0.3s ease;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
