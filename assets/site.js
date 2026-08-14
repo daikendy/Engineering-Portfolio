@@ -162,9 +162,12 @@ document.addEventListener('DOMContentLoaded', () => {
       person_profiles: 'identified_only',
       capture_pageview: true,
       capture_pageleave: true,
-      autocapture: true
+      autocapture: true,
+      persistence: 'memory', // Cookieless mode — zero tracking cookies stored on client devices
+      mask_all_text_inputs: true, // Privacy guardrail — masks all input fields
+      mask_all_element_attributes: true // Privacy guardrail — masks sensitive attributes
     });
-    console.log('PostHog Analytics Initialized.');
+    console.log('PostHog Analytics Initialized (Privacy-friendly mode).');
   })();
 
   // Outbound & High-Value Telemetry Tracking Helpers
