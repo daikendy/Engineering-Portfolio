@@ -136,23 +136,21 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileMenu.classList.remove('open');
       }
     });
-  // Dual-Persona Switcher (Software ↔ Hardware Engineering)
-  (function initPersonaSwitcher() {
-    const brandToggle = document.getElementById('brandPersonaToggle');
-    const topbarBtn = document.getElementById('topbarModeBtn');
-    const brandRole = document.getElementById('brandRole');
-    const personaPill = document.getElementById('personaPill');
-    const topbarLabel = topbarBtn ? topbarBtn.querySelector('.mode-label-text') : null;
+  }
 
+  // Interactive Software ↔ Hardware Engineering Persona Toggle
+  (function initPersonaToggle() {
+    const toggleBtn = document.getElementById('personaToggleBtn');
+    const brandRole = document.getElementById('brandRole');
     const heroHead = document.getElementById('heroHead');
     const heroSub = document.getElementById('heroSub');
     const heroMetaContainer = document.querySelector('.hero-meta');
     const tickerTrack = document.querySelector('.stack-track');
     const stackCategoriesContainer = document.querySelector('.stack-categories');
 
-    // Store original software persona defaults before any morphing
-    const SOFTWARE_DEFAULTS = {
-      role: (typeof SITE_DATA !== 'undefined' && SITE_DATA.role) ? SITE_DATA.role : "Full-Stack Software Engineer",
+    // Capture initial software mode DOM content BEFORE any changes happen
+    const SOFTWARE_CONTENT = {
+      role: brandRole ? brandRole.textContent : "Full-Stack Software Engineer",
       heroHead: heroHead ? heroHead.innerHTML : "",
       heroSub: heroSub ? heroSub.innerHTML : "",
       heroMeta: heroMetaContainer ? heroMetaContainer.innerHTML : "",
@@ -160,51 +158,40 @@ document.addEventListener('DOMContentLoaded', () => {
       stackCategories: stackCategoriesContainer ? stackCategoriesContainer.innerHTML : ""
     };
 
-    function applyPersonaMode(mode, triggerEvent = false) {
-      document.body.setAttribute('data-mode', mode);
-      localStorage.setItem('portfolio_mode', mode);
-
+    function setMode(mode, sendAnalytics = false) {
       const isHardware = (mode === 'hardware');
+      document.body.setAttribute('data-mode', isHardware ? 'hardware' : 'software');
+      localStorage.setItem('portfolio_persona', mode);
 
-      // 1. Update Sidebar & Topbar Badges
-      if (brandRole) brandRole.textContent = isHardware ? "Hardware & Embedded Engineer" : SOFTWARE_DEFAULTS.role;
-      if (personaPill) {
-        personaPill.querySelector('.persona-icon').textContent = isHardware ? "⚙️" : "⚡";
-        personaPill.querySelector('.persona-text').textContent = isHardware ? "Hardware Mode" : "Software Mode";
-      }
-      if (topbarLabel) {
-        topbarLabel.textContent = isHardware ? "Hardware Mode" : "Software Mode";
-      }
+      // Update Toggle Button Text & Role
+      if (toggleBtn) toggleBtn.textContent = isHardware ? '[⚙️ Switch to Software]' : '[⚡ Switch to Hardware]';
+      if (brandRole) brandRole.textContent = isHardware ? 'Hardware & Embedded Engineer' : SOFTWARE_CONTENT.role;
 
-      // 2. Morph Hero Content
+      // Morph Hero Headline
       if (heroHead && typeof HARDWARE_DATA !== 'undefined') {
-        const rawHead = isHardware ? HARDWARE_DATA.heroHead : SOFTWARE_DEFAULTS.heroHead;
-        heroHead.innerHTML = rawHead;
-        if (window.gsap && isHardware) {
-          gsap.fromTo('#heroHead .word span', { y: '110%' }, { y: '0%', duration: 0.7, ease: 'power4.out', stagger: 0.02 });
-        }
+        heroHead.innerHTML = isHardware ? HARDWARE_DATA.heroHead : SOFTWARE_CONTENT.heroHead;
       }
+      // Morph Hero Subtitle
       if (heroSub && typeof HARDWARE_DATA !== 'undefined') {
-        heroSub.innerHTML = isHardware ? HARDWARE_DATA.heroSub : SOFTWARE_DEFAULTS.heroSub;
+        heroSub.innerHTML = isHardware ? HARDWARE_DATA.heroSub : SOFTWARE_CONTENT.heroSub;
       }
+      // Morph Hero Metrics
       if (heroMetaContainer && typeof HARDWARE_DATA !== 'undefined' && HARDWARE_DATA.heroMeta) {
         if (isHardware) {
           heroMetaContainer.innerHTML = HARDWARE_DATA.heroMeta.map(m => `<div><strong>${m.val}</strong>${m.desc}</div>`).join('');
         } else {
-          heroMetaContainer.innerHTML = SOFTWARE_DEFAULTS.heroMeta;
+          heroMetaContainer.innerHTML = SOFTWARE_CONTENT.heroMeta;
         }
       }
-
-      // 3. Morph Stack Ticker
+      // Morph Ticker Track
       if (tickerTrack && typeof HARDWARE_DATA !== 'undefined' && HARDWARE_DATA.ticker) {
         if (isHardware) {
           tickerTrack.innerHTML = HARDWARE_DATA.ticker.map(t => `<span>${t}</span>`).join('');
         } else {
-          tickerTrack.innerHTML = SOFTWARE_DEFAULTS.ticker;
+          tickerTrack.innerHTML = SOFTWARE_CONTENT.ticker;
         }
       }
-
-      // 4. Morph Stack Categories section
+      // Morph Stack Categories
       if (stackCategoriesContainer && typeof HARDWARE_DATA !== 'undefined' && HARDWARE_DATA.stackCategories) {
         if (isHardware) {
           stackCategoriesContainer.innerHTML = HARDWARE_DATA.stackCategories.map(cat => `
@@ -221,34 +208,26 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           `).join('');
         } else {
-          stackCategoriesContainer.innerHTML = SOFTWARE_DEFAULTS.stackCategories;
+          stackCategoriesContainer.innerHTML = SOFTWARE_CONTENT.stackCategories;
         }
       }
 
-      // 5. Fire PostHog Telemetry Event if triggered by user interaction
-      if (triggerEvent && window.posthog) {
+      if (sendAnalytics && window.posthog) {
         window.posthog.capture('persona_switched', { mode: mode });
       }
     }
 
-    // Attach click triggers
-    function toggleMode() {
-      const currentMode = document.body.getAttribute('data-mode') === 'hardware' ? 'software' : 'hardware';
-      applyPersonaMode(currentMode, true);
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        const nextMode = document.body.getAttribute('data-mode') === 'hardware' ? 'software' : 'hardware';
+        setMode(nextMode, true);
+      });
     }
 
-    if (brandToggle) {
-      brandToggle.addEventListener('click', toggleMode);
-      brandToggle.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMode(); } });
-    }
-    if (topbarBtn) {
-      topbarBtn.addEventListener('click', toggleMode);
-    }
-
-    // Load initial preference from localStorage (defaults to software)
-    const savedMode = localStorage.getItem('portfolio_mode') || 'software';
-    if (savedMode === 'hardware') {
-      applyPersonaMode('hardware', false);
+    // Load saved persona preference
+    const saved = localStorage.getItem('portfolio_persona');
+    if (saved === 'hardware') {
+      setMode('hardware', false);
     }
   })();
 

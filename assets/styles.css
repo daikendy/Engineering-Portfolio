@@ -12,78 +12,15 @@
   --maxw:760px;
 }
 
-/* Hardware Persona Mode override (Circuit Amber / Copper) */
+/* Hardware Mode Color Palette Accent (Circuit Amber / Copper) */
 body[data-mode="hardware"] {
   --cobalt: #D97706;
   --cobalt-deep: #92400E;
   --cobalt-wash: #FEF3C7;
 }
 
-/* Smooth theme transition */
 body {
-  transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-.topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.mode-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  border: 1px solid var(--hairline);
-  background: var(--paper-dim);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-.mode-toggle-btn:hover {
-  border-color: var(--cobalt);
-  color: var(--ink);
-}
-.mode-indicator-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--cobalt);
-  transition: background 0.3s ease;
-}
-
-.brand {
-  cursor: pointer;
-  border-radius: 10px;
-  padding: 6px 8px;
-  margin: -6px -8px 0;
-  transition: background 0.25s ease;
-}
-.brand:hover {
-  background: var(--paper-dim);
-}
-.persona-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 8px;
-  padding: 3px 8px;
-  border-radius: 14px;
-  border: 1px solid var(--hairline);
-  background: var(--cobalt-wash);
-  color: var(--cobalt-deep);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10.5px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-.persona-pill .persona-hint {
-  opacity: 0.6;
-  font-size: 9.5px;
+  transition: color 0.3s ease;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
