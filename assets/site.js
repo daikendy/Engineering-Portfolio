@@ -138,99 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Interactive Software ↔ Hardware Engineering Persona Toggle
-  (function initPersonaToggle() {
-    const toggleBtn = document.getElementById('personaToggleBtn');
-    const brandRole = document.getElementById('brandRole');
-    const heroHead = document.getElementById('heroHead');
-    const heroSub = document.getElementById('heroSub');
-    const heroMetaContainer = document.querySelector('.hero-meta');
-    const tickerTrack = document.querySelector('.stack-track');
-    const stackCategoriesContainer = document.querySelector('.stack-categories');
-
-    // Capture initial software mode DOM content BEFORE any changes happen
-    const SOFTWARE_CONTENT = {
-      role: brandRole ? brandRole.textContent : "Full-Stack Software Engineer",
-      heroHead: heroHead ? heroHead.innerHTML : "",
-      heroSub: heroSub ? heroSub.innerHTML : "",
-      heroMeta: heroMetaContainer ? heroMetaContainer.innerHTML : "",
-      ticker: tickerTrack ? tickerTrack.innerHTML : "",
-      stackCategories: stackCategoriesContainer ? stackCategoriesContainer.innerHTML : ""
-    };
-
-    function setMode(mode, sendAnalytics = false) {
-      const isHardware = (mode === 'hardware');
-      document.body.setAttribute('data-mode', isHardware ? 'hardware' : 'software');
-      localStorage.setItem('portfolio_persona', mode);
-
-      // Update Toggle Button Text & Role
-      if (toggleBtn) toggleBtn.textContent = isHardware ? '[⚙️ Switch to Software]' : '[⚡ Switch to Hardware]';
-      if (brandRole) brandRole.textContent = isHardware ? 'Hardware & Embedded Engineer' : SOFTWARE_CONTENT.role;
-
-      // Morph Hero Headline
-      if (heroHead && typeof HARDWARE_DATA !== 'undefined') {
-        heroHead.innerHTML = isHardware ? HARDWARE_DATA.heroHead : SOFTWARE_CONTENT.heroHead;
-      }
-      // Morph Hero Subtitle
-      if (heroSub && typeof HARDWARE_DATA !== 'undefined') {
-        heroSub.innerHTML = isHardware ? HARDWARE_DATA.heroSub : SOFTWARE_CONTENT.heroSub;
-      }
-      // Morph Hero Metrics
-      if (heroMetaContainer && typeof HARDWARE_DATA !== 'undefined' && HARDWARE_DATA.heroMeta) {
-        if (isHardware) {
-          heroMetaContainer.innerHTML = HARDWARE_DATA.heroMeta.map(m => `<div><strong>${m.val}</strong>${m.desc}</div>`).join('');
-        } else {
-          heroMetaContainer.innerHTML = SOFTWARE_CONTENT.heroMeta;
-        }
-      }
-      // Morph Ticker Track
-      if (tickerTrack && typeof HARDWARE_DATA !== 'undefined' && HARDWARE_DATA.ticker) {
-        if (isHardware) {
-          tickerTrack.innerHTML = HARDWARE_DATA.ticker.map(t => `<span>${t}</span>`).join('');
-        } else {
-          tickerTrack.innerHTML = SOFTWARE_CONTENT.ticker;
-        }
-      }
-      // Morph Stack Categories
-      if (stackCategoriesContainer && typeof HARDWARE_DATA !== 'undefined' && HARDWARE_DATA.stackCategories) {
-        if (isHardware) {
-          stackCategoriesContainer.innerHTML = HARDWARE_DATA.stackCategories.map(cat => `
-            <div class="stack-category">
-              <div class="stack-category-label">${cat.label}</div>
-              <div class="stack-rows">
-                ${cat.rows.map(r => `
-                  <div class="stack-row">
-                    <div class="stack-name">${r.name}</div>
-                    <div class="stack-why">${r.why}</div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          `).join('');
-        } else {
-          stackCategoriesContainer.innerHTML = SOFTWARE_CONTENT.stackCategories;
-        }
-      }
-
-      if (sendAnalytics && window.posthog) {
-        window.posthog.capture('persona_switched', { mode: mode });
-      }
-    }
-
-    if (toggleBtn) {
-      toggleBtn.addEventListener('click', () => {
-        const nextMode = document.body.getAttribute('data-mode') === 'hardware' ? 'software' : 'hardware';
-        setMode(nextMode, true);
-      });
-    }
-
-    // Load saved persona preference
-    const saved = localStorage.getItem('portfolio_persona');
-    if (saved === 'hardware') {
-      setMode('hardware', false);
-    }
-  })();
-
   // Register PWA Service Worker for offline support and app installation
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -300,6 +207,14 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (href.startsWith('mailto:')) {
       window.posthog.capture('contact_email_click', {
         email: href.replace('mailto:', ''),
+        page: window.location.pathname
+      });
+    }
+    // 4. Persona Switcher Link Click
+    else if (link.classList.contains('persona-toggle-link')) {
+      const isToHardware = href.includes('hardware');
+      window.posthog.capture('persona_switched', {
+        mode: isToHardware ? 'hardware' : 'software',
         page: window.location.pathname
       });
     }
